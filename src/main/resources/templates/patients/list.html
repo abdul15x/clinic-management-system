@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patients - Clinic Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" href="/">Clinic Management System</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/patients">Patients</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>Patient List</h2>
+                <span class="badge bg-primary" th:text="${#lists.size(patients)} + ' Patients'">0 Patients</span>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-striped table-hover table-bordered">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>Patient ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Gender</th>
+                        <th>Date of Birth</th>
+                        <th>Blood Group</th>
+                        <th>Address</th>
+                        <th>Created At</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="patient : ${patients}">
+                        <td th:text="${patient.patientId}">PAT-001</td>
+                        <td th:text="${patient.name}">John Doe</td>
+                        <td th:text="${patient.email}">john@example.com</td>
+                        <td th:text="${patient.phone}">03001234567</td>
+                        <td th:text="${patient.gender}">MALE</td>
+                        <td th:text="${patient.dateOfBirth}">1990-01-01</td>
+                        <td th:text="${patient.bloodGroup}">O_POSITIVE</td>
+                        <td th:text="${patient.address}">Address</td>
+                        <td th:text="${patient.createdAt}">2024-01-01</td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(patients)}">
+                        <td colspan="9" class="text-center text-muted">No patients found. Add patients via REST API first.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="alert alert-info mt-3">
+                <h5>REST API Endpoints (Day 1):</h5>
+                <ul class="mb-0">
+                    <li><code>POST /api/patients</code> - Create patient</li>
+                    <li><code>GET /api/patients</code> - List all patients</li>
+                    <li><code>GET /api/patients/{id}</code> - Get patient by ID</li>
+                    <li><code>PUT /api/patients/{id}</code> - Update patient</li>
+                    <li><code>DELETE /api/patients/{id}</code> - Delete patient</li>
+                    <li><code>GET /api/patients/search?name=</code> - Search patients</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
