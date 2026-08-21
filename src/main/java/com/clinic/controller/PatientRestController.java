@@ -4,6 +4,7 @@ import com.clinic.dto.PatientRequestDto;
 import com.clinic.dto.PatientResponseDto;
 import com.clinic.service.PatientService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,13 +13,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/patients")
+@RequiredArgsConstructor
 public class PatientRestController {
 
     private final PatientService patientService;
-
-    public PatientRestController(PatientService patientService) {
-        this.patientService = patientService;
-    }
 
     @PostMapping
     public ResponseEntity<PatientResponseDto> createPatient(@Valid @RequestBody PatientRequestDto requestDto) {

@@ -43,7 +43,9 @@
                         <th>Date of Birth</th>
                         <th>Blood Group</th>
                         <th>Address</th>
+
                         <th>Created At</th>
+
                     </tr>
                     </thead>
                     <tbody>
@@ -56,7 +58,7 @@
                         <td th:text="${patient.dateOfBirth}">1990-01-01</td>
                         <td th:text="${patient.bloodGroup}">O_POSITIVE</td>
                         <td th:text="${patient.address}">Address</td>
-                        <td th:text="${patient.createdAt}">2024-01-01</td>
+                        <td th:text="${#temporals.format(patient.createdAt, 'yyyy-MM-dd HH:mm')}">2024-01-01</td>
                     </tr>
                     <tr th:if="${#lists.isEmpty(patients)}">
                         <td colspan="9" class="text-center text-muted">No patients found. Add patients via REST API first.</td>

@@ -4,34 +4,36 @@ import com.clinic.dto.PatientRequestDto;
 import com.clinic.dto.PatientResponseDto;
 import com.clinic.entity.Patient;
 import com.clinic.repository.PatientRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class PatientServiceImpl implements PatientService {
 
     private final PatientRepository patientRepository;
-
-    public PatientServiceImpl(PatientRepository patientRepository) {
-        this.patientRepository = patientRepository;
-    }
 
     @Override
     public PatientResponseDto createPatient(PatientRequestDto requestDto) {
         String patientId = "PAT-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
 
-        Patient patient = new Patient();
-        patient.setPatientId(patientId);
-        patient.setName(requestDto.getName());
-        patient.setEmail(requestDto.getEmail());
-        patient.setPhone(requestDto.getPhone());
-        patient.setGender(requestDto.getGender());
-        patient.setDateOfBirth(requestDto.getDateOfBirth());
-        patient.setAddress(requestDto.getAddress());
-        patient.setBloodGroup(requestDto.getBloodGroup());
+        Patient patient = Patient.builder()
+                .patientId(patientId)
+                .name(requestDto.getName())
+                .email(requestDto.getEmail())
+                .phone(requestDto.getPhone())
+                .gender(requestDto.getGender())
+                .dateOfBirth(requestDto.getDateOfBirth())
+                .address(requestDto.getAddress())
+                .bloodGroup(requestDto.getBloodGroup())
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
 
         Patient saved = patientRepository.save(patient);
         return mapToResponseDto(saved);
@@ -39,12 +41,10 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public List<PatientResponseDto> getAllPatients() {
-        List<Patient> patients = patientRepository.findAll();
-        List<PatientResponseDto> responseList = new ArrayList<>();
-        for (Patient patient : patients) {
-            responseList.add(mapToResponseDto(patient));
-        }
-        return responseList;
+        return patientRepository.findAll()
+                .stream()
+                .map(this::mapToResponseDto)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -66,6 +66,7 @@ public class PatientServiceImpl implements PatientService {
         existing.setDateOfBirth(requestDto.getDateOfBirth());
         existing.setAddress(requestDto.getAddress());
         existing.setBloodGroup(requestDto.getBloodGroup());
+        existing.setUpdatedAt(LocalDateTime.now());
 
         Patient updated = patientRepository.save(existing);
         return mapToResponseDto(updated);
@@ -81,26 +82,24 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public List<PatientResponseDto> searchPatientsByName(String name) {
-        List<Patient> patients = patientRepository.findByNameContainingIgnoreCase(name);
-        List<PatientResponseDto> responseList = new ArrayList<>();
-        for (Patient patient : patients) {
-            responseList.add(mapToResponseDto(patient));
-        }
-        return responseList;
+        return patientRepository.findByNameContainingIgnoreCase(name)
+                .stream()
+                .map(this::mapToResponseDto)
+                .collect(Collectors.toList());
     }
 
     private PatientResponseDto mapToResponseDto(Patient patient) {
-        PatientResponseDto dto = new PatientResponseDto();
-        dto.setPatientId(patient.getPatientId());
-        dto.setName(patient.getName());
-        dto.setEmail(patient.getEmail());
-        dto.setPhone(patient.getPhone());
-        dto.setGender(patient.getGender());
-        dto.setDateOfBirth(patient.getDateOfBirth());
-        dto.setAddress(patient.getAddress());
-        dto.setBloodGroup(patient.getBloodGroup());
-        dto.setCreatedAt(patient.getCreatedAt());
-        dto.setUpdatedAt(patient.getUpdatedAt());
-        return dto;
+        return PatientResponseDto.builder()
+                .patientId(patient.getPatientId())
+                .name(patient.getName())
+                .email(patient.getEmail())
+                .phone(patient.getPhone())
+                .gender(patient.getGender())
+                .dateOfBirth(patient.getDateOfBirth())
+                .address(patient.getAddress())
+                .bloodGroup(patient.getBloodGroup())
+                .createdAt(patient.getCreatedAt())
+                .updatedAt(patient.getUpdatedAt())
+                .build();
     }
 }
