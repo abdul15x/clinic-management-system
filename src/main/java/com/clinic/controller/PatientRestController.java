@@ -5,6 +5,7 @@ import com.clinic.dto.PatientResponseDto;
 import com.clinic.service.PatientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,13 @@ public class PatientRestController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PatientResponseDto>> getAllPatients() {
+    public ResponseEntity<?> getAllPatients(
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size) {
+
+        if (page != null && size != null) {
+            return ResponseEntity.ok(patientService.getAllPatientsPaginated(page, size));
+        }
         return ResponseEntity.ok(patientService.getAllPatients());
     }
 
@@ -47,7 +54,14 @@ public class PatientRestController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<PatientResponseDto>> searchPatients(@RequestParam String name) {
+    public ResponseEntity<?> searchPatients(
+            @RequestParam String name,
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size) {
+
+        if (page != null && size != null) {
+            return ResponseEntity.ok(patientService.searchPatientsByNamePaginated(name, page, size));
+        }
         return ResponseEntity.ok(patientService.searchPatientsByName(name));
     }
 }

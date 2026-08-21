@@ -28,7 +28,10 @@
         <div class="col-md-12">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2>Patient List</h2>
-                <span class="badge bg-primary" th:text="${#lists.size(patients)} + ' Patients'">0 Patients</span>
+                <div>
+                    <span class="badge bg-primary me-2" th:text="${#lists.size(patients)} + ' Patients'">0 Patients</span>
+                    <a href="/patients/new" class="btn btn-success btn-sm">+ Add Patient</a>
+                </div>
             </div>
 
             <div class="table-responsive">
@@ -42,10 +45,7 @@
                         <th>Gender</th>
                         <th>Date of Birth</th>
                         <th>Blood Group</th>
-                        <th>Address</th>
-
-                        <th>Created At</th>
-
+                        <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -57,25 +57,32 @@
                         <td th:text="${patient.gender}">MALE</td>
                         <td th:text="${patient.dateOfBirth}">1990-01-01</td>
                         <td th:text="${patient.bloodGroup}">O_POSITIVE</td>
-                        <td th:text="${patient.address}">Address</td>
-                        <td th:text="${#temporals.format(patient.createdAt, 'yyyy-MM-dd HH:mm')}">2024-01-01</td>
+                        <td>
+                            <a th:href="@{/patients/{id}(id=${patient.patientId})}" class="btn btn-info btn-sm">View</a>
+                            <a th:href="@{/patients/{id}/edit(id=${patient.patientId})}" class="btn btn-warning btn-sm">Edit</a>
+                            <a th:href="@{/patients/{id}/delete(id=${patient.patientId})}"
+                               class="btn btn-danger btn-sm"
+                               onclick="return confirm('Are you sure?')">Delete</a>
+                        </td>
                     </tr>
                     <tr th:if="${#lists.isEmpty(patients)}">
-                        <td colspan="9" class="text-center text-muted">No patients found. Add patients via REST API first.</td>
+                        <td colspan="8" class="text-center text-muted">No patients found. <a href="/patients/new">Add your first patient</a>.</td>
                     </tr>
                     </tbody>
                 </table>
             </div>
 
             <div class="alert alert-info mt-3">
-                <h5>REST API Endpoints (Day 1):</h5>
+                <h5>REST API Endpoints (Day 2):</h5>
                 <ul class="mb-0">
                     <li><code>POST /api/patients</code> - Create patient</li>
                     <li><code>GET /api/patients</code> - List all patients</li>
+                    <li><code>GET /api/patients?page=0&size=10</code> - Paginated list</li>
                     <li><code>GET /api/patients/{id}</code> - Get patient by ID</li>
                     <li><code>PUT /api/patients/{id}</code> - Update patient</li>
                     <li><code>DELETE /api/patients/{id}</code> - Delete patient</li>
                     <li><code>GET /api/patients/search?name=</code> - Search patients</li>
+                    <li><code>GET /api/patients/search?name=&page=0&size=10</code> - Search with pagination</li>
                 </ul>
             </div>
         </div>

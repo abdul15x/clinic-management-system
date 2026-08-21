@@ -3,8 +3,13 @@ package com.clinic.service;
 import com.clinic.dto.PatientRequestDto;
 import com.clinic.dto.PatientResponseDto;
 import com.clinic.entity.Patient;
+import com.clinic.exception.DuplicateEmailException;
+import com.clinic.exception.PatientNotFoundException;
 import com.clinic.repository.PatientRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -20,6 +25,10 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public PatientResponseDto createPatient(PatientRequestDto requestDto) {
+        if (patientRepository.findByEmail(requestDto.getEmail()).isPresent()) {
+            throw new DuplicateEmailException("Patient with email " + requestDto.getEmail() + " already exists");
+        }
+
         String patientId = "PAT-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
 
         Patient patient = Patient.builder()
@@ -50,14 +59,14 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public PatientResponseDto getPatientById(String patientId) {
         Patient patient = patientRepository.findById(patientId)
-                .orElseThrow(() -> new RuntimeException("Patient not found with id: " + patientId));
+                .orElseThrow(() -> new PatientNotFoundException("Patient not found with id: " + patientId));
         return mapToResponseDto(patient);
     }
 
     @Override
     public PatientResponseDto updatePatient(String patientId, PatientRequestDto requestDto) {
         Patient existing = patientRepository.findById(patientId)
-                .orElseThrow(() -> new RuntimeException("Patient not found with id: " + patientId));
+                .orElseThrow(() -> new PatientNotFoundException("Patient not found with id: " + patientId));
 
         existing.setName(requestDto.getName());
         existing.setEmail(requestDto.getEmail());
@@ -75,7 +84,7 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public void deletePatient(String patientId) {
         if (!patientRepository.existsById(patientId)) {
-            throw new RuntimeException("Patient not found with id: " + patientId);
+            throw new PatientNotFoundException("Patient not found with id: " + patientId);
         }
         patientRepository.deleteById(patientId);
     }
@@ -86,6 +95,20 @@ public class PatientServiceImpl implements PatientService {
                 .stream()
                 .map(this::mapToResponseDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<PatientResponseDto> getAllPatientsPaginated(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Patient> patientPage = patientRepository.findAll(pageable);
+        return patientPage.map(this::mapToResponseDto);
+    }
+
+    @Override
+    public Page<PatientResponseDto> searchPatientsByNamePaginated(String name, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Patient> patientPage = patientRepository.findByNameContainingIgnoreCase(name, pageable);
+        return patientPage.map(this::mapToResponseDto);
     }
 
     private PatientResponseDto mapToResponseDto(Patient patient) {

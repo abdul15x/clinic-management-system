@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" href="/">Clinic Management System</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                <li class="nav-item"><a class="nav-link active" href="/patients">Patients</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">Patient Details</h4>
+                    <span class="badge bg-light text-dark" th:text="${patient.patientId}">PAT-001</span>
+                </div>
+                <div class="card-body">
+                    <table class="table table-borderless">
+                        <tr>
+                            <th width="30%">Name</th>
+                            <td th:text="${patient.name}">Ali Khan</td>
+                        </tr>
+                        <tr>
+                            <th>Email</th>
+                            <td th:text="${patient.email}">ali@example.com</td>
+                        </tr>
+                        <tr>
+                            <th>Phone</th>
+                            <td th:text="${patient.phone}">03001234567</td>
+                        </tr>
+                        <tr>
+                            <th>Gender</th>
+                            <td th:text="${patient.gender}">MALE</td>
+                        </tr>
+                        <tr>
+                            <th>Date of Birth</th>
+                            <td th:text="${patient.dateOfBirth}">1990-05-15</td>
+                        </tr>
+                        <tr>
+                            <th>Blood Group</th>
+                            <td th:text="${patient.bloodGroup}">O_POSITIVE</td>
+                        </tr>
+                        <tr>
+                            <th>Address</th>
+                            <td th:text="${patient.address}">123 Main Street</td>
+                        </tr>
+                        <tr>
+                            <th>Created At</th>
+                            <td th:text="${#temporals.format(patient.createdAt, 'yyyy-MM-dd HH:mm')}">2024-01-01</td>
+                        </tr>
+                        <tr>
+                            <th>Updated At</th>
+                            <td th:text="${#temporals.format(patient.updatedAt, 'yyyy-MM-dd HH:mm')}">2024-01-01</td>
+                        </tr>
+                    </table>
+
+                    <div class="d-flex justify-content-between mt-3">
+                        <a href="/patients" class="btn btn-secondary">Back to List</a>
+                        <div>
+                            <a th:href="@{/patients/{id}/edit(id=${patient.patientId})}" class="btn btn-warning">Edit</a>
+                            <a th:href="@{/patients/{id}/delete(id=${patient.patientId})}"
+                               class="btn btn-danger"
+                               onclick="return confirm('Are you sure you want to delete this patient?')">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
