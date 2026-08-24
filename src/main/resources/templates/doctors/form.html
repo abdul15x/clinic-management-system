@@ -9,12 +9,16 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container">
-        <a class="navbar-brand" href="/static">Clinic Management System</a>
+        <a class="navbar-brand" href="/">Clinic Management System</a>
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav me-auto">
-                <li class="nav-item"><a class="nav-link" href="/static">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="/patients">Patients</a></li>
                 <li class="nav-item"><a class="nav-link active" href="/doctors">Doctors</a></li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+                <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
             </ul>
         </div>
     </div>
@@ -31,41 +35,72 @@
                     <form th:action="${doctor} ? @{/doctors/{id}/update(id=${doctor.doctorId})} : @{/doctors/create}"
                           th:object="${doctorRequest}" method="post">
 
+                        <!-- Name -->
                         <div class="mb-3">
                             <label class="form-label">Full Name</label>
-                            <input type="text" class="form-control" th:field="*{name}" required>
+                            <input type="text" class="form-control"
+                                   th:classappend="${#fields.hasErrors('name')} ? 'is-invalid' : ''"
+                                   th:field="*{name}">
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}"
+                                 th:errors="*{name}"></div>
                         </div>
 
+                        <!-- Email -->
                         <div class="mb-3">
                             <label class="form-label">Email</label>
-                            <input type="email" class="form-control" th:field="*{email}" required>
+                            <input type="email" class="form-control"
+                                   th:classappend="${#fields.hasErrors('email')} ? 'is-invalid' : ''"
+                                   th:field="*{email}">
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}"
+                                 th:errors="*{email}"></div>
                         </div>
 
+                        <!-- Phone -->
                         <div class="mb-3">
                             <label class="form-label">Phone</label>
-                            <input type="text" class="form-control" th:field="*{phone}" required>
+                            <input type="text" class="form-control"
+                                   th:classappend="${#fields.hasErrors('phone')} ? 'is-invalid' : ''"
+                                   th:field="*{phone}">
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('phone')}"
+                                 th:errors="*{phone}"></div>
                         </div>
 
+                        <!-- Specialization -->
                         <div class="mb-3">
                             <label class="form-label">Specialization</label>
-                            <select class="form-select" th:field="*{specialization}" required>
+                            <select class="form-select"
+                                    th:classappend="${#fields.hasErrors('specialization')} ? 'is-invalid' : ''"
+                                    th:field="*{specialization}">
                                 <option value="">Select Specialization</option>
                                 <option th:each="spec : ${specializations}"
                                         th:value="${spec}"
                                         th:text="${spec}">CARDIOLOGY</option>
                             </select>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('specialization')}"
+                                 th:errors="*{specialization}"></div>
                         </div>
 
+                        <!-- Qualification -->
                         <div class="mb-3">
                             <label class="form-label">Qualification</label>
-                            <input type="text" class="form-control" th:field="*{qualification}" required>
+                            <input type="text" class="form-control"
+                                   th:classappend="${#fields.hasErrors('qualification')} ? 'is-invalid' : ''"
+                                   th:field="*{qualification}">
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('qualification')}"
+                                 th:errors="*{qualification}"></div>
                         </div>
 
+                        <!-- Experience -->
                         <div class="mb-3">
                             <label class="form-label">Experience (Years)</label>
-                            <input type="number" class="form-control" th:field="*{experience}" required min="0">
+                            <input type="number" class="form-control"
+                                   th:classappend="${#fields.hasErrors('experience')} ? 'is-invalid' : ''"
+                                   th:field="*{experience}" min="0">
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('experience')}"
+                                 th:errors="*{experience}"></div>
                         </div>
 
+                        <!-- Availability -->
                         <div class="mb-3">
                             <label class="form-label">Availability</label>
                             <input type="text" class="form-control" th:field="*{availability}" placeholder="e.g., Mon-Fri 9AM-5PM">

@@ -4,9 +4,11 @@ import com.clinic.dto.DoctorRequestDto;
 import com.clinic.dto.DoctorResponseDto;
 import com.clinic.enums.Specialization;
 import com.clinic.service.DoctorService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -31,7 +33,13 @@ public class DoctorViewController {
     }
 
     @PostMapping("/create")
-    public String createDoctor(@ModelAttribute DoctorRequestDto requestDto) {
+    public String createDoctor(@Valid @ModelAttribute("doctorRequest") DoctorRequestDto requestDto,
+                               BindingResult bindingResult,
+                               Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("specializations", Specialization.values());
+            return "doctors/form";
+        }
         doctorService.createDoctor(requestDto);
         return "redirect:/doctors";
     }
@@ -61,7 +69,15 @@ public class DoctorViewController {
     }
 
     @PostMapping("/{id}/update")
-    public String updateDoctor(@PathVariable String id, @ModelAttribute DoctorRequestDto requestDto) {
+    public String updateDoctor(@PathVariable String id,
+                               @Valid @ModelAttribute("doctorRequest") DoctorRequestDto requestDto,
+                               BindingResult bindingResult,
+                               Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("doctor", doctorService.getDoctorById(id));
+            model.addAttribute("specializations", Specialization.values());
+            return "doctors/form";
+        }
         doctorService.updateDoctor(id, requestDto);
         return "redirect:/doctors";
     }

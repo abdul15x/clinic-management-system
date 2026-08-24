@@ -22,6 +22,14 @@
                     <a class="nav-link" href="/doctors">Doctors</a>
                 </li>
             </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/register">Register</a>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>
@@ -30,18 +38,19 @@
     <div class="row">
         <div class="col-md-12 text-center">
             <h1 class="display-4">Welcome to Clinic Management System</h1>
-            <p class="lead">Day 3: Doctor Management Module Added</p>
+            <p class="lead">Day 4: User Authentication & Spring Security</p>
             <div class="mt-4">
                 <a href="/patients" class="btn btn-primary btn-lg me-2">View Patients</a>
                 <a href="/patients/new" class="btn btn-success btn-lg me-2">Add Patient</a>
                 <a href="/doctors" class="btn btn-info btn-lg me-2">View Doctors</a>
-                <a href="/doctors/new" class="btn btn-warning btn-lg">Add Doctor</a>
+                <a href="/doctors/new" class="btn btn-warning btn-lg me-2">Add Doctor</a>
+                <a href="/register" class="btn btn-dark btn-lg">Register User</a>
             </div>
         </div>
     </div>
 
     <div class="row mt-5">
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="card text-white bg-primary mb-3">
                 <div class="card-body">
                     <h5 class="card-title">Patients</h5>
@@ -50,12 +59,21 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="card text-white bg-success mb-3">
                 <div class="card-body">
                     <h5 class="card-title">Doctors</h5>
                     <p class="card-text">Manage doctors with specialization filtering and search.</p>
                     <a href="/doctors" class="btn btn-light btn-sm">Go to Doctors</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-dark mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Users</h5>
+                    <p class="card-text">Register and manage users with role-based access.</p>
+                    <a href="/register" class="btn btn-light btn-sm">Register</a>
                 </div>
             </div>
         </div>

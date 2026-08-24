@@ -3,7 +3,9 @@ spring:
     name: clinic-management-system
   data:
     mongodb:
-      uri: mongodb://localhost:27017/clinic_db
+      host: localhost
+      port: 27017
+      database: clinic_db
   thymeleaf:
     cache: false
     mode: HTML

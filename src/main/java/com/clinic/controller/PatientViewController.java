@@ -3,9 +3,11 @@ package com.clinic.controller;
 import com.clinic.dto.PatientRequestDto;
 import com.clinic.dto.PatientResponseDto;
 import com.clinic.service.PatientService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -28,7 +30,12 @@ public class PatientViewController {
     }
 
     @PostMapping("/create")
-    public String createPatient(@ModelAttribute PatientRequestDto requestDto) {
+    public String createPatient(@Valid @ModelAttribute("patientRequest") PatientRequestDto requestDto,
+                                BindingResult bindingResult,
+                                Model model) {
+        if (bindingResult.hasErrors()) {
+            return "patients/form";
+        }
         patientService.createPatient(requestDto);
         return "redirect:/patients";
     }
@@ -57,7 +64,14 @@ public class PatientViewController {
     }
 
     @PostMapping("/{id}/update")
-    public String updatePatient(@PathVariable String id, @ModelAttribute PatientRequestDto requestDto) {
+    public String updatePatient(@PathVariable String id,
+                                @Valid @ModelAttribute("patientRequest") PatientRequestDto requestDto,
+                                BindingResult bindingResult,
+                                Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("patient", patientService.getPatientById(id));
+            return "patients/form";
+        }
         patientService.updatePatient(id, requestDto);
         return "redirect:/patients";
     }
