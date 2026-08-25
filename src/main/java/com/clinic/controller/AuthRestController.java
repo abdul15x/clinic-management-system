@@ -1,8 +1,10 @@
 package com.clinic.controller;
 
+import com.clinic.dto.AuthResponseDto;
 import com.clinic.dto.LoginRequestDto;
 import com.clinic.dto.RegisterRequestDto;
 import com.clinic.dto.UserResponseDto;
+import com.clinic.security.JwtUtil;
 import com.clinic.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthRestController {
 
     private final UserService userService;
+    private final JwtUtil jwtUtil;
 
     @PostMapping("/register")
     public ResponseEntity<UserResponseDto> register(@Valid @RequestBody RegisterRequestDto requestDto) {
@@ -23,8 +26,18 @@ public class AuthRestController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserResponseDto> login(@Valid @RequestBody LoginRequestDto requestDto) {
-        return ResponseEntity.ok(userService.login(requestDto));
+    public ResponseEntity<AuthResponseDto> login(@Valid @RequestBody LoginRequestDto requestDto) {
+        UserResponseDto user = userService.login(requestDto);
+        String token = jwtUtil.generateToken(user.getUsername(), user.getRole());
+
+        AuthResponseDto response = AuthResponseDto.builder()
+                .token(token)
+                .tokenType("Bearer")
+                .username(user.getUsername())
+                .role(user.getRole())
+                .build();
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/me")
