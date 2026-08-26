@@ -6,6 +6,7 @@ import com.clinic.enums.Specialization;
 import com.clinic.service.DoctorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,6 +27,7 @@ public class DoctorViewController {
     }
 
     @GetMapping("/new")
+    @PreAuthorize("hasRole('ADMIN')")
     public String showCreateForm(Model model) {
         model.addAttribute("doctorRequest", new DoctorRequestDto());
         model.addAttribute("specializations", Specialization.values());
@@ -33,6 +35,7 @@ public class DoctorViewController {
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasRole('ADMIN')")
     public String createDoctor(@Valid @ModelAttribute("doctorRequest") DoctorRequestDto requestDto,
                                BindingResult bindingResult,
                                Model model) {
@@ -51,6 +54,7 @@ public class DoctorViewController {
     }
 
     @GetMapping("/{id}/edit")
+    @PreAuthorize("hasRole('ADMIN')")
     public String showEditForm(@PathVariable String id, Model model) {
         DoctorResponseDto doctor = doctorService.getDoctorById(id);
         DoctorRequestDto requestDto = new DoctorRequestDto();
@@ -69,6 +73,7 @@ public class DoctorViewController {
     }
 
     @PostMapping("/{id}/update")
+    @PreAuthorize("hasRole('ADMIN')")
     public String updateDoctor(@PathVariable String id,
                                @Valid @ModelAttribute("doctorRequest") DoctorRequestDto requestDto,
                                BindingResult bindingResult,
@@ -83,6 +88,7 @@ public class DoctorViewController {
     }
 
     @GetMapping("/{id}/delete")
+    @PreAuthorize("hasRole('ADMIN')")
     public String deleteDoctor(@PathVariable String id) {
         doctorService.deleteDoctor(id);
         return "redirect:/doctors";

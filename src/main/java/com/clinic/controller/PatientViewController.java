@@ -5,6 +5,7 @@ import com.clinic.dto.PatientResponseDto;
 import com.clinic.service.PatientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,12 +25,14 @@ public class PatientViewController {
     }
 
     @GetMapping("/new")
+    @PreAuthorize("hasAnyRole('ADMIN', 'RECEPTIONIST')")
     public String showCreateForm(Model model) {
         model.addAttribute("patientRequest", new PatientRequestDto());
         return "patients/form";
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasAnyRole('ADMIN', 'RECEPTIONIST')")
     public String createPatient(@Valid @ModelAttribute("patientRequest") PatientRequestDto requestDto,
                                 BindingResult bindingResult,
                                 Model model) {
@@ -47,6 +50,7 @@ public class PatientViewController {
     }
 
     @GetMapping("/{id}/edit")
+    @PreAuthorize("hasAnyRole('ADMIN', 'RECEPTIONIST')")
     public String showEditForm(@PathVariable String id, Model model) {
         PatientResponseDto patient = patientService.getPatientById(id);
         PatientRequestDto requestDto = new PatientRequestDto();
@@ -64,6 +68,7 @@ public class PatientViewController {
     }
 
     @PostMapping("/{id}/update")
+    @PreAuthorize("hasAnyRole('ADMIN', 'RECEPTIONIST')")
     public String updatePatient(@PathVariable String id,
                                 @Valid @ModelAttribute("patientRequest") PatientRequestDto requestDto,
                                 BindingResult bindingResult,
@@ -77,6 +82,7 @@ public class PatientViewController {
     }
 
     @GetMapping("/{id}/delete")
+    @PreAuthorize("hasRole('ADMIN')")
     public String deletePatient(@PathVariable String id) {
         patientService.deletePatient(id);
         return "redirect:/patients";
