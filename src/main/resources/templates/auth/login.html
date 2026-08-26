@@ -33,31 +33,19 @@
                 </div>
                 <div class="card-body p-4">
 
-                    <!-- Global Error (invalid credentials) -->
-                    <div th:if="${globalError}" class="alert alert-danger" th:text="${globalError}"></div>
+                    <!-- Global Error (Spring Security redirect) -->
+                    <div th:if="${param.error}" class="alert alert-danger">Invalid username or password</div>
+                    <div th:if="${param.logout}" class="alert alert-success">You have been logged out</div>
 
-                    <form th:action="@{/auth/login}" th:object="${loginRequest}" method="post">
-
-                        <!-- Username -->
+                    <form th:action="@{/login}" method="post">
                         <div class="mb-3">
                             <label class="form-label">Username</label>
-                            <input type="text" class="form-control"
-                                   th:classappend="${#fields.hasErrors('username')} ? 'is-invalid' : ''"
-                                   th:field="*{username}">
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('username')}"
-                                 th:errors="*{username}"></div>
+                            <input type="text" class="form-control" name="username" required>
                         </div>
-
-                        <!-- Password -->
                         <div class="mb-3">
                             <label class="form-label">Password</label>
-                            <input type="password" class="form-control"
-                                   th:classappend="${#fields.hasErrors('password')} ? 'is-invalid' : ''"
-                                   th:field="*{password}">
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('password')}"
-                                 th:errors="*{password}"></div>
+                            <input type="password" class="form-control" name="password" required>
                         </div>
-
                         <div class="d-grid">
                             <button type="submit" class="btn btn-primary">Login</button>
                         </div>

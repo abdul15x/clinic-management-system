@@ -30,22 +30,22 @@ public class AuthViewController {
         return "auth/register";
     }
 
-    @PostMapping("/auth/login")
-    public String loginUser(@Valid @ModelAttribute("loginRequest") LoginRequestDto requestDto,
-                            BindingResult bindingResult,
-                            Model model) {
-        if (bindingResult.hasErrors()) {
-            return "auth/login";
-        }
-
-        try {
-            userService.login(requestDto);
-            return "redirect:/";
-        } catch (Exception e) {
-            model.addAttribute("globalError", e.getMessage());
-            return "auth/login";
-        }
-    }
+//    @PostMapping("/auth/login")
+//    public String loginUser(@Valid @ModelAttribute("loginRequest") LoginRequestDto requestDto,
+//                            BindingResult bindingResult,
+//                            Model model) {
+//        if (bindingResult.hasErrors()) {
+//            return "auth/login";
+//        }
+//
+//        try {
+//            userService.login(requestDto);
+//            return "redirect:/";
+//        } catch (Exception e) {
+//            model.addAttribute("globalError", e.getMessage());
+//            return "auth/login";
+//        }
+//    }
 
     @PostMapping("/auth/register")
     public String registerUser(@Valid @ModelAttribute("registerRequest") RegisterRequestDto requestDto,

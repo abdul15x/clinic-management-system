@@ -25,26 +25,24 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final UserDetailsService userDetailsService;
 
     @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        // CRITICAL: Skip this filter entirely for non-API paths (let session auth work)
+        String path = request.getRequestURI();
+        return !path.startsWith("/api/")
+                || path.equals("/api/auth/login")
+                || path.equals("/api/auth/register");
+    }
+
+    @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        String requestPath = request.getRequestURI();
         String authHeader = request.getHeader("Authorization");
 
-        // Skip JWT check for public paths
-        if (isPublicPath(requestPath)) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        // API request without token → return 401 JSON
+        // No Bearer token → 401
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            if (requestPath.startsWith("/api/")) {
-                sendUnauthorizedResponse(response);
-                return;
-            }
-            filterChain.doFilter(request, response);
+            sendUnauthorizedResponse(response);
             return;
         }
 
@@ -65,25 +63,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(authToken);
             filterChain.doFilter(request, response);
         } else {
-            if (requestPath.startsWith("/api/")) {
-                sendUnauthorizedResponse(response);
-            } else {
-                filterChain.doFilter(request, response);
-            }
+            sendUnauthorizedResponse(response);
         }
-    }
-
-    private boolean isPublicPath(String path) {
-        return path.equals("/api/auth/register")
-                || path.equals("/api/auth/login")
-                || path.startsWith("/auth/")
-                || path.equals("/login")
-                || path.equals("/register")
-                || path.startsWith("/css/")
-                || path.startsWith("/js/")
-                || path.equals("/")
-                || path.startsWith("/patients/")
-                || path.startsWith("/doctors/");
     }
 
     private void sendUnauthorizedResponse(HttpServletResponse response) throws IOException {
