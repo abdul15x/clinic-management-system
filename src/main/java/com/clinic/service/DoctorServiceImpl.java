@@ -3,14 +3,10 @@ package com.clinic.service;
 import com.clinic.dto.DoctorRequestDto;
 import com.clinic.dto.DoctorResponseDto;
 import com.clinic.entity.Doctor;
-import com.clinic.enums.Specialization;
 import com.clinic.exception.DoctorNotFoundException;
 import com.clinic.exception.DuplicateEmailException;
 import com.clinic.repository.DoctorRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -59,14 +55,14 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public DoctorResponseDto getDoctorById(String doctorId) {
-        Doctor doctor = doctorRepository.findById(doctorId)
+        Doctor doctor = doctorRepository.findByDoctorId(doctorId)
                 .orElseThrow(() -> new DoctorNotFoundException("Doctor not found with id: " + doctorId));
         return mapToResponseDto(doctor);
     }
 
     @Override
     public DoctorResponseDto updateDoctor(String doctorId, DoctorRequestDto requestDto) {
-        Doctor existing = doctorRepository.findById(doctorId)
+        Doctor existing = doctorRepository.findByDoctorId(doctorId)
                 .orElseThrow(() -> new DoctorNotFoundException("Doctor not found with id: " + doctorId));
 
         existing.setName(requestDto.getName());
@@ -84,40 +80,9 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public void deleteDoctor(String doctorId) {
-        if (!doctorRepository.existsById(doctorId)) {
-            throw new DoctorNotFoundException("Doctor not found with id: " + doctorId);
-        }
-        doctorRepository.deleteById(doctorId);
-    }
-
-    @Override
-    public List<DoctorResponseDto> getDoctorsBySpecialization(Specialization specialization) {
-        return doctorRepository.findBySpecialization(specialization)
-                .stream()
-                .map(this::mapToResponseDto)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<DoctorResponseDto> searchDoctorsByName(String name) {
-        return doctorRepository.findByNameContainingIgnoreCase(name)
-                .stream()
-                .map(this::mapToResponseDto)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public Page<DoctorResponseDto> getAllDoctorsPaginated(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Doctor> doctorPage = doctorRepository.findAll(pageable);
-        return doctorPage.map(this::mapToResponseDto);
-    }
-
-    @Override
-    public Page<DoctorResponseDto> getDoctorsBySpecializationPaginated(Specialization specialization, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Doctor> doctorPage = doctorRepository.findBySpecialization(specialization, pageable);
-        return doctorPage.map(this::mapToResponseDto);
+        Doctor doctor = doctorRepository.findByDoctorId(doctorId)
+                .orElseThrow(() -> new DoctorNotFoundException("Doctor not found with id: " + doctorId));
+        doctorRepository.delete(doctor);
     }
 
     private DoctorResponseDto mapToResponseDto(Doctor doctor) {
