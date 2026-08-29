@@ -15,3 +15,8 @@ spring:
 
 server:
   port: 8080
+  server:
+    error:
+      whitelabel:
+        enabled: false
+      path: /error

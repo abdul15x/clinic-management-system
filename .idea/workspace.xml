@@ -5,43 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e30a66a7-e277-4e6c-87d4-1c9f48921df1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/clinic/controller/MedicalRecordRestController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/clinic/controller/MedicalRecordViewController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/clinic/controller/PrescriptionRestController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/clinic/controller/PrescriptionViewController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/clinic/dto/MedicalRecordRequestDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/clinic/dto/MedicalRecordResponseDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/clinic/dto/PrescriptionRequestDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/clinic/dto/PrescriptionResponseDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/clinic/entity/MedicalRecord.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/clinic/entity/Prescription.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/clinic/enums/PrescriptionStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/clinic/exception/MedicalRecordNotFoundException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/clinic/exception/PrescriptionNotFoundException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/clinic/repository/MedicalRecordRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/clinic/repository/PrescriptionRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/clinic/service/MedicalRecordService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/clinic/service/MedicalRecordServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/clinic/service/PrescriptionService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/clinic/service/PrescriptionServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/medical-records/detail.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/medical-records/form.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/medical-records/list.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/prescriptions/detail.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/prescriptions/form.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/prescriptions/list.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/clinic/dto/ErrorResponseDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/clinic/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/error/403.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/error/404.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/error/500.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/clinic/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/clinic/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/appointments/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/appointments/detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/appointments/form.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/appointments/form.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/appointments/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/appointments/list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/auth/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/auth/login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/auth/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/auth/register.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/doctors/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/doctors/detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/doctors/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/doctors/list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/patients/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/patients/detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/patients/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/patients/list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/clinic/security/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/clinic/security/JwtAuthenticationFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,8 +24,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="HTML File" />
+        <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -75,6 +49,7 @@
     "DefaultHtmlFileTemplate": "HTML File",
     "Maven.clinic-management-system [clean].executor": "Run",
     "Maven.clinic-management-system [install].executor": "Run",
+    "Maven.clinic-management-system [package].executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RequestMappingsPanelOrder0": "0",
     "RequestMappingsPanelOrder1": "1",
@@ -100,6 +75,9 @@
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.clinic.controller" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="F:\springboot internship\final project internship\src\main\resources\templates" />
     </key>

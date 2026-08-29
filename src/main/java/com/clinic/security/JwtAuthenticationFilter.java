@@ -70,6 +70,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private void sendUnauthorizedResponse(HttpServletResponse response) throws IOException {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.getWriter().write("{\"error\": \"Unauthorized\", \"message\": \"Authentication required. Please provide a valid JWT token.\"}");
+        response.getWriter().write("{\"status\":401,\"error\":\"Unauthorized\",\"message\":\"Authentication required. Please provide a valid JWT token.\",\"timestamp\":\"" + java.time.LocalDateTime.now() + "\"}");
     }
 }
