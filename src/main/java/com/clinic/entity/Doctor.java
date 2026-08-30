@@ -35,4 +35,7 @@ public class Doctor {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    public void setId(String s) {
+    }
 }

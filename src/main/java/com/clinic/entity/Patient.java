@@ -37,4 +37,7 @@ public class Patient {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    public void setId(String s) {
+    }
 }

@@ -5,22 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e30a66a7-e277-4e6c-87d4-1c9f48921df1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/clinic/config/OpenApiConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Test Results - com_clinic_service_in_clinic-management-system.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/clinic/service/DoctorServiceTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/clinic/service/PatientServiceTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/clinic/service/UserServiceTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/clinic/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/clinic/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/clinic/controller/AppointmentRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/clinic/controller/AppointmentRestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/clinic/controller/AuthRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/clinic/controller/AuthRestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/clinic/controller/DoctorRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/clinic/controller/DoctorRestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/clinic/controller/MedicalRecordRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/clinic/controller/MedicalRecordRestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/clinic/controller/PatientRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/clinic/controller/PatientRestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/clinic/controller/PrescriptionRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/clinic/controller/PrescriptionRestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/clinic/entity/Doctor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/clinic/entity/Doctor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/clinic/entity/Patient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/clinic/entity/Patient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/clinic/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/clinic/entity/User.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="ExportTestResults" outputFolder="$PROJECT_DIR$" userTempatePath="" />
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -47,6 +47,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "DefaultHtmlFileTemplate": "HTML File",
+    "JUnit.com.clinic.service in clinic-management-system.executor": "Run",
     "Maven.clinic-management-system [clean].executor": "Run",
     "Maven.clinic-management-system [install].executor": "Run",
     "Maven.clinic-management-system [package].executor": "Run",
@@ -83,7 +84,21 @@
       <recent name="F:\springboot internship\final project internship\src\main\resources\templates" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="JUnit.com.clinic.service in clinic-management-system">
+    <configuration name="com.clinic.service in clinic-management-system" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="clinic-management-system" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.clinic.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.clinic.service" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ClinicManagementSystemApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="clinic-management-system" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.clinic.ClinicManagementSystemApplication" />
@@ -91,6 +106,11 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.com.clinic.service in clinic-management-system" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>

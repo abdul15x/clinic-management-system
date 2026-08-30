@@ -28,4 +28,7 @@ public class User {
 
     @CreatedDate
     private LocalDateTime createdAt;
+
+    public void setId(String s) {
+    }
 }
