@@ -5,15 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e30a66a7-e277-4e6c-87d4-1c9f48921df1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Test Results - com_clinic_service_in_clinic-management-system.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/clinic/service/DoctorServiceTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/clinic/service/PatientServiceTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/clinic/service/UserServiceTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/clinic/controller/DashboardController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/clinic/controller/DashboardRestController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/clinic/dto/DashboardStatsDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/clinic/service/DashboardService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/clinic/service/DashboardServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/dashboard.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/fragments/navbar.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/clinic/entity/Doctor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/clinic/entity/Doctor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/clinic/entity/Patient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/clinic/entity/Patient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/clinic/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/clinic/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/clinic/config/MongoConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/clinic/config/MongoConfig.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,9 +26,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="HTML File" />
         <option value="Interface" />
         <option value="Class" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -84,7 +86,7 @@
       <recent name="F:\springboot internship\final project internship\src\main\resources\templates" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.com.clinic.service in clinic-management-system">
+  <component name="RunManager" selected="Spring Boot.ClinicManagementSystemApplication">
     <configuration name="com.clinic.service in clinic-management-system" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="clinic-management-system" />
       <extension name="coverage">
