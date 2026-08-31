@@ -4,86 +4,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Appointments - Clinic Management System</title>
+    <title>Appointments | Clinic Management System</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 </head>
-<body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container">
-        <a class="navbar-brand" href="/">Clinic Management System</a>
-        <div class="collapse navbar-collapse">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="/patients">Patients</a></li>
-                <li class="nav-item"><a class="nav-link" href="/doctors">Doctors</a></li>
-                <li class="nav-item"><a class="nav-link active" href="/appointments">Appointments</a></li>
-                <li class="nav-item"><a class="nav-link" href="/prescriptions">Prescriptions</a></li>
-                <li class="nav-item"><a class="nav-link" href="/medical-records">Medical Records</a></li>
-            </ul>
-            <ul class="navbar-nav">
-                <li class="nav-item" sec:authorize="!isAuthenticated()">
-                    <a class="nav-link" href="/login">Login</a>
-                </li>
-                <li class="nav-item" sec:authorize="!isAuthenticated()">
-                    <a class="nav-link" href="/register">Register</a>
-                </li>
-                <li class="nav-item" sec:authorize="isAuthenticated()">
-                    <span class="nav-link" sec:authentication="name"></span>
-                </li>
-                <li class="nav-item" sec:authorize="isAuthenticated()">
-                    <a class="nav-link" href="/logout">Logout</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<body class="bg-light">
 
-<div class="container mt-4">
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container mt-4 mb-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Appointments List</h2>
-        <a href="/appointments/new" class="btn btn-success" sec:authorize="hasAnyRole('ADMIN', 'RECEPTIONIST')">Book New Appointment</a>
+        <h2><i class="bi bi-calendar-check"></i> Appointments</h2>
+        <a th:href="@{/appointments/new}" class="btn btn-success" sec:authorize="hasAnyRole('ADMIN', 'RECEPTIONIST')">
+            <i class="bi bi-plus-lg"></i> Book Appointment
+        </a>
     </div>
 
-    <div class="table-responsive">
-        <table class="table table-striped table-hover">
-            <thead class="table-dark">
-            <tr>
-                <th>Appointment ID</th>
-                <th>Patient</th>
-                <th>Doctor</th>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="apt : ${appointments}">
-                <td th:text="${apt.appointmentId}"></td>
-                <td th:text="${apt.patientName}"></td>
-                <td th:text="${apt.doctorName}"></td>
-                <td th:text="${apt.appointmentDate}"></td>
-                <td th:text="${apt.appointmentTime}"></td>
-                <td>
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover mb-0">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Patient</th>
+                        <th>Doctor</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="apt : ${appointments}">
+                        <td th:text="${apt.appointmentId}"></td>
+                        <td th:text="${apt.patientName}"></td>
+                        <td th:text="${apt.doctorName}"></td>
+                        <td th:text="${apt.appointmentDate}"></td>
+                        <td th:text="${apt.appointmentTime}"></td>
+                        <td>
                             <span class="badge"
                                   th:classappend="${apt.status.name() == 'SCHEDULED'} ? 'bg-warning' :
                                                   (${apt.status.name() == 'COMPLETED'} ? 'bg-success' : 'bg-danger')"
                                   th:text="${apt.status}"></span>
-                </td>
-                <td>
-                    <a th:href="@{/appointments/{id}(id=${apt.appointmentId})}" class="btn btn-info btn-sm">View</a>
-                    <a th:href="@{/appointments/{id}/edit(id=${apt.appointmentId})}" class="btn btn-warning btn-sm" sec:authorize="hasAnyRole('ADMIN', 'RECEPTIONIST')">Edit</a>
-                    <a th:href="@{/appointments/{id}/delete(id=${apt.appointmentId})}" class="btn btn-danger btn-sm" sec:authorize="hasRole('ADMIN')"
-                       onclick="return confirm('Are you sure?')">Delete</a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+                        </td>
+                        <td class="text-end">
+                            <a th:href="@{/appointments/{id}(id=${apt.appointmentId})}" class="btn btn-info btn-sm">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a th:href="@{/appointments/{id}/edit(id=${apt.appointmentId})}" class="btn btn-warning btn-sm" sec:authorize="hasAnyRole('ADMIN', 'RECEPTIONIST')">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a th:href="@{/appointments/{id}/delete(id=${apt.appointmentId})}" class="btn btn-danger btn-sm" sec:authorize="hasRole('ADMIN')"
+                               onclick="return confirm('Are you sure?')">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
-    <a href="/" class="btn btn-secondary">Back to Home</a>
+    <a th:href="@{/}" class="btn btn-secondary mt-3"><i class="bi bi-arrow-left"></i> Back to Home</a>
 </div>
 
+<div th:replace="~{fragments/footer :: footer}"></div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

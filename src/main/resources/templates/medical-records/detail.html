@@ -4,47 +4,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medical Record Details - Clinic Management System</title>
+    <title>Medical Record Details | Clinic Management System</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 </head>
-<body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container">
-        <a class="navbar-brand" href="/">Clinic Management System</a>
-        <div class="collapse navbar-collapse">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="/patients">Patients</a></li>
-                <li class="nav-item"><a class="nav-link" href="/doctors">Doctors</a></li>
-                <li class="nav-item"><a class="nav-link" href="/appointments">Appointments</a></li>
-                <li class="nav-item"><a class="nav-link" href="/prescriptions">Prescriptions</a></li>
-                <li class="nav-item"><a class="nav-link active" href="/medical-records">Medical Records</a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<body class="bg-light">
 
-<div class="container mt-4">
-    <h2>Medical Record Details</h2>
-    <div class="card mt-3">
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container mt-4 mb-5">
+    <h2><i class="bi bi-journal-medical"></i> Medical Record Details</h2>
+    <div class="card shadow-sm mt-3">
         <div class="card-body">
             <h5 class="card-title" th:text="${record.recordId}"></h5>
-            <p class="card-text"><strong>Patient:</strong> <span th:text="${record.patientName}"></span> (<span th:text="${record.patientId}"></span>)</p>
-            <p class="card-text"><strong>Doctor:</strong> <span th:text="${record.doctorName}"></span> (<span th:text="${record.doctorId}"></span>)</p>
-            <p class="card-text"><strong>Diagnosis:</strong> <span th:text="${record.diagnosis}"></span></p>
-            <p class="card-text"><strong>Treatment:</strong> <span th:text="${record.treatment}"></span></p>
-            <p class="card-text"><strong>Notes:</strong> <span th:text="${record.notes}"></span></p>
-            <p class="card-text"><strong>Created:</strong> <span th:text="${record.createdAt}"></span></p>
+            <hr>
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="card-text"><strong><i class="bi bi-person"></i> Patient:</strong> <span th:text="${record.patientName}"></span> (<span th:text="${record.patientId}"></span>)</p>
+                    <p class="card-text"><strong><i class="bi bi-person-badge"></i> Doctor:</strong> <span th:text="${record.doctorName}"></span> (<span th:text="${record.doctorId}"></span>)</p>
+                </div>
+                <div class="col-md-6">
+                    <p class="card-text text-muted small"><strong><i class="bi bi-clock-history"></i> Created:</strong> <span th:text="${record.createdAt}"></span></p>
+                </div>
+            </div>
+            <hr>
+            <p class="card-text"><strong><i class="bi bi-clipboard-pulse"></i> Diagnosis:</strong></p>
+            <p class="card-text bg-light p-3 rounded" th:text="${record.diagnosis}"></p>
+
+            <p class="card-text"><strong><i class="bi bi-capsule"></i> Treatment:</strong></p>
+            <p class="card-text bg-light p-3 rounded" th:text="${record.treatment}"></p>
+
+            <p class="card-text"><strong><i class="bi bi-sticky"></i> Notes:</strong></p>
+            <p class="card-text bg-light p-3 rounded" th:text="${record.notes}"></p>
         </div>
     </div>
     <div class="mt-3">
-        <a href="/medical-records" class="btn btn-secondary">Back to List</a>
-        <a th:href="@{/medical-records/{id}/edit(id=${record.recordId})}" class="btn btn-warning" sec:authorize="hasAnyRole('ADMIN', 'DOCTOR')">Edit</a>
+        <a th:href="@{/medical-records}" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Back</a>
+        <a th:href="@{/medical-records/{id}/edit(id=${record.recordId})}" class="btn btn-warning" sec:authorize="hasAnyRole('ADMIN', 'DOCTOR')">
+            <i class="bi bi-pencil"></i> Edit
+        </a>
         <a th:href="@{/medical-records/{id}/delete(id=${record.recordId})}" class="btn btn-danger" sec:authorize="hasRole('ADMIN')"
-           onclick="return confirm('Are you sure?')">Delete</a>
+           onclick="return confirm('Are you sure?')">
+            <i class="bi bi-trash"></i> Delete
+        </a>
     </div>
 </div>
 
+<div th:replace="~{fragments/footer :: footer}"></div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

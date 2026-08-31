@@ -5,67 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${patient} ? 'Edit Patient' : 'Add Patient'">Add Patient</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 </head>
-<body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container">
-        <a class="navbar-brand" href="/">Clinic Management System</a>
-        <div class="collapse navbar-collapse">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-                <li class="nav-item"><a class="nav-link active" href="/patients">Patients</a></li>
-                <li class="nav-item"><a class="nav-link" href="/doctors">Doctors</a></li>
-            </ul>
-            <ul class="navbar-nav">
-                <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
-                <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<body class="bg-light">
 
-<div class="container mt-4">
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container mt-4 mb-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
+            <div class="card shadow-sm">
                 <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0" th:text="${patient} ? 'Edit Patient' : 'Add New Patient'">Add New Patient</h4>
+                    <h4 class="mb-0"><i class="bi bi-person-plus"></i> <span th:text="${patient} ? 'Edit Patient' : 'Add New Patient'">Add New Patient</span></h4>
                 </div>
                 <div class="card-body">
                     <form th:action="${patient} ? @{/patients/{id}/update(id=${patient.patientId})} : @{/patients/create}"
                           th:object="${patientRequest}" method="post">
 
-                        <!-- Name -->
                         <div class="mb-3">
                             <label class="form-label">Full Name</label>
                             <input type="text" class="form-control"
                                    th:classappend="${#fields.hasErrors('name')} ? 'is-invalid' : ''"
                                    th:field="*{name}">
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}"
-                                 th:errors="*{name}"></div>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
                         </div>
 
-                        <!-- Email -->
                         <div class="mb-3">
                             <label class="form-label">Email</label>
                             <input type="email" class="form-control"
                                    th:classappend="${#fields.hasErrors('email')} ? 'is-invalid' : ''"
                                    th:field="*{email}">
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}"
-                                 th:errors="*{email}"></div>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
                         </div>
 
-                        <!-- Phone -->
                         <div class="mb-3">
                             <label class="form-label">Phone</label>
                             <input type="text" class="form-control"
                                    th:classappend="${#fields.hasErrors('phone')} ? 'is-invalid' : ''"
                                    th:field="*{phone}">
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('phone')}"
-                                 th:errors="*{phone}"></div>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
                         </div>
 
-                        <!-- Gender -->
                         <div class="mb-3">
                             <label class="form-label">Gender</label>
                             <select class="form-select"
@@ -76,21 +56,17 @@
                                 <option value="FEMALE">Female</option>
                                 <option value="OTHER">Other</option>
                             </select>
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('gender')}"
-                                 th:errors="*{gender}"></div>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></div>
                         </div>
 
-                        <!-- Date of Birth -->
                         <div class="mb-3">
                             <label class="form-label">Date of Birth</label>
                             <input type="date" class="form-control"
                                    th:classappend="${#fields.hasErrors('dateOfBirth')} ? 'is-invalid' : ''"
                                    th:field="*{dateOfBirth}">
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('dateOfBirth')}"
-                                 th:errors="*{dateOfBirth}"></div>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"></div>
                         </div>
 
-                        <!-- Blood Group -->
                         <div class="mb-3">
                             <label class="form-label">Blood Group</label>
                             <select class="form-select"
@@ -106,18 +82,16 @@
                                 <option value="O_POSITIVE">O+</option>
                                 <option value="O_NEGATIVE">O-</option>
                             </select>
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('bloodGroup')}"
-                                 th:errors="*{bloodGroup}"></div>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('bloodGroup')}" th:errors="*{bloodGroup}"></div>
                         </div>
 
-                        <!-- Address -->
                         <div class="mb-3">
                             <label class="form-label">Address</label>
                             <textarea class="form-control" th:field="*{address}" rows="3"></textarea>
                         </div>
 
                         <div class="d-flex justify-content-between">
-                            <a href="/patients" class="btn btn-secondary">Cancel</a>
+                            <a th:href="@{/patients}" class="btn btn-secondary"><i class="bi bi-x-lg"></i> Cancel</a>
                             <button type="submit" class="btn btn-primary" th:text="${patient} ? 'Update Patient' : 'Create Patient'">Create Patient</button>
                         </div>
                     </form>
@@ -127,6 +101,7 @@
     </div>
 </div>
 
+<div th:replace="~{fragments/footer :: footer}"></div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

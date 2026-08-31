@@ -33,7 +33,6 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/register", "/api/auth/login", "/debug/auth").permitAll()
                         .requestMatchers("/auth/**", "/login", "/register", "/css/**", "/js/**", "/").permitAll()
                         .requestMatchers("/swagger-ui/**", "/api-docs/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
-                        .requestMatchers("/patients/**", "/doctors/**", "/appointments/**", "/prescriptions/**", "/medical-records/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
