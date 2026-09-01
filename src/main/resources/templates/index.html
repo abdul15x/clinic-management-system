@@ -5,95 +5,108 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clinic Management System</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <th:block th:replace="~{fragments/navbar :: globalStyles}"></th:block>
 </head>
-<body class="bg-light">
+<body>
 
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<div class="container mt-5">
-    <div class="text-center mb-5">
-        <h1><i class="bi bi-hospital"></i> Clinic Management System</h1>
-        <p class="lead text-muted">Manage patients, doctors, appointments, prescriptions, and medical records efficiently</p>
-    </div>
-
-    <div class="row g-4">
-        <!-- Patients -->
-        <div class="col-md-4 col-lg-2">
-            <div class="card h-100 shadow-sm border-0">
-                <div class="card-body text-center">
-                    <i class="bi bi-people-fill text-primary fs-1 mb-3"></i>
-                    <h5 class="card-title">Patients</h5>
-                    <p class="card-text text-muted small">Manage patient records and medical history</p>
-                    <a th:href="@{/patients}" class="btn btn-primary btn-sm">View Patients</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Doctors -->
-        <div class="col-md-4 col-lg-2">
-            <div class="card h-100 shadow-sm border-0">
-                <div class="card-body text-center">
-                    <i class="bi bi-person-badge-fill text-success fs-1 mb-3"></i>
-                    <h5 class="card-title">Doctors</h5>
-                    <p class="card-text text-muted small">Manage doctor profiles and schedules</p>
-                    <a th:href="@{/doctors}" class="btn btn-success btn-sm">View Doctors</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Appointments -->
-        <div class="col-md-4 col-lg-2">
-            <div class="card h-100 shadow-sm border-0">
-                <div class="card-body text-center">
-                    <i class="bi bi-calendar-check-fill text-info fs-1 mb-3"></i>
-                    <h5 class="card-title">Appointments</h5>
-                    <p class="card-text text-muted small">Book and manage appointments</p>
-                    <a th:href="@{/appointments}" class="btn btn-info btn-sm text-white">View Appointments</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Prescriptions -->
-        <div class="col-md-4 col-lg-2">
-            <div class="card h-100 shadow-sm border-0">
-                <div class="card-body text-center">
-                    <i class="bi bi-file-medical-fill text-warning fs-1 mb-3"></i>
-                    <h5 class="card-title">Prescriptions</h5>
-                    <p class="card-text text-muted small">Manage patient prescriptions</p>
-                    <a th:href="@{/prescriptions}" class="btn btn-warning btn-sm text-white">View Prescriptions</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Medical Records -->
-        <div class="col-md-4 col-lg-2">
-            <div class="card h-100 shadow-sm border-0">
-                <div class="card-body text-center">
-                    <i class="bi bi-journal-medical text-danger fs-1 mb-3"></i>
-                    <h5 class="card-title">Medical Records</h5>
-                    <p class="card-text text-muted small">View patient medical history</p>
-                    <a th:href="@{/medical-records}" class="btn btn-danger btn-sm">View Records</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Users (Admin only) -->
-        <div class="col-md-4 col-lg-2" sec:authorize="hasRole('ADMIN')">
-            <div class="card h-100 shadow-sm border-success">
-                <div class="card-body text-center">
-                    <i class="bi bi-shield-lock-fill text-success fs-1 mb-3"></i>
-                    <h5 class="card-title text-success">Users</h5>
-                    <p class="card-text text-muted small">Manage system users and roles</p>
-                    <a th:href="@{/register}" class="btn btn-outline-success btn-sm">Add User</a>
-                </div>
-            </div>
+<div class="cms-main">
+    <div class="cms-topbar">
+        <div>
+            <div class="cms-topbar-title">Welcome to ClinicMS</div>
+            <div class="cms-topbar-sub">Select a module to get started</div>
         </div>
     </div>
+
+    <div class="cms-content">
+
+        <!-- Hero banner -->
+        <div style="
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+      border-radius: 14px;
+      padding: 36px 32px;
+      margin-bottom: 28px;
+      display: flex; align-items: center; justify-content: space-between;
+      overflow: hidden; position: relative;
+    ">
+            <div style="position:relative; z-index:1;">
+                <div style="font-size:11px;font-weight:600;letter-spacing:1px;color:var(--teal);text-transform:uppercase;margin-bottom:10px;">Clinic Management System</div>
+                <h1 style="font-size:26px;font-weight:700;color:#fff;margin-bottom:10px;line-height:1.2;">Manage your clinic<br>from one place</h1>
+                <p style="font-size:13.5px;color:rgba(255,255,255,.6);max-width:380px;line-height:1.6;">Patients, doctors, appointments, prescriptions and medical records — all unified in a single dashboard.</p>
+                <a th:href="@{/dashboard}" sec:authorize="isAuthenticated()" class="btn-cms btn-teal-cms" style="margin-top:20px;display:inline-flex;">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h8v8H3V3zm0 10h8v8H3v-8zm10-10h8v8h-8V3zm0 10h8v8h-8v-8z"/></svg>
+                    Go to Dashboard
+                </a>
+                <a th:href="@{/login}" sec:authorize="!isAuthenticated()" class="btn-cms btn-teal-cms" style="margin-top:20px;display:inline-flex;">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11 7L9.6 8.4l2.6 2.6H2v2h10.2l-2.6 2.6L11 17l5-5-5-5zm9 12h-8v2h8a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-8v2h8v14z"/></svg>
+                    Sign In
+                </a>
+            </div>
+            <!-- Decorative circle -->
+            <div style="width:180px;height:180px;border-radius:50%;border:28px solid rgba(16,184,166,.12);position:absolute;right:60px;top:-40px;"></div>
+            <div style="width:110px;height:110px;border-radius:50%;background:rgba(16,184,166,.08);position:absolute;right:160px;bottom:-30px;"></div>
+        </div>
+
+        <!-- Module cards -->
+        <h2 style="font-size:15px;font-weight:600;margin-bottom:16px;color:var(--text-primary);">Modules</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;">
+
+            <a th:href="@{/patients}" class="module-card">
+                <div class="module-card-icon" style="background:#EFF6FF;">
+                    <svg viewBox="0 0 24 24" fill="#3B82F6"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                </div>
+                <div class="module-card-title">Patients</div>
+                <div class="module-card-desc">Records &amp; medical history</div>
+            </a>
+
+            <a th:href="@{/doctors}" class="module-card">
+                <div class="module-card-icon" style="background:#F0FDF4;">
+                    <svg viewBox="0 0 24 24" fill="#22C55E"><path d="M12 12c2.7 0 8 1.34 8 4v2H4v-2c0-2.66 5.3-4 8-4zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm6 6.5v1h1.5v1H18v1h-1v-1h-1.5v-1H17v-1h1z"/></svg>
+                </div>
+                <div class="module-card-title">Doctors</div>
+                <div class="module-card-desc">Profiles &amp; schedules</div>
+            </a>
+
+            <a th:href="@{/appointments}" class="module-card">
+                <div class="module-card-icon" style="background:#E0F7F5;">
+                    <svg viewBox="0 0 24 24" fill="#10B8A6"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
+                </div>
+                <div class="module-card-title">Appointments</div>
+                <div class="module-card-desc">Book &amp; manage visits</div>
+            </a>
+
+            <a th:href="@{/prescriptions}" class="module-card">
+                <div class="module-card-icon" style="background:#FFFBEB;">
+                    <svg viewBox="0 0 24 24" fill="#F59E0B"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm-7 14l-4-4 1.41-1.41L12 14.17l6.59-6.59L20 9l-8 8z"/></svg>
+                </div>
+                <div class="module-card-title">Prescriptions</div>
+                <div class="module-card-desc">Patient medications</div>
+            </a>
+
+            <a th:href="@{/medical-records}" class="module-card">
+                <div class="module-card-icon" style="background:#FEF2F0;">
+                    <svg viewBox="0 0 24 24" fill="#E8503A"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 9h-2v2H9v2h2v2h2v-2h2v-2h-2v-2zm3-10v5h5l-5-5z"/></svg>
+                </div>
+                <div class="module-card-title">Medical Records</div>
+                <div class="module-card-desc">Patient history</div>
+            </a>
+
+            <a th:href="@{/register}" class="module-card" sec:authorize="hasRole('ADMIN')"
+               style="border-color: rgba(16,184,166,.3); background: var(--teal-light);">
+                <div class="module-card-icon" style="background:#fff;">
+                    <svg viewBox="0 0 24 24" fill="#10B8A6"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2zm-6 9a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                </div>
+                <div class="module-card-title">Manage Users</div>
+                <div class="module-card-desc">Roles &amp; access control</div>
+            </a>
+
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
 </div>
 
-<div th:replace="~{fragments/footer :: footer}"></div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

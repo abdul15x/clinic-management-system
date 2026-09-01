@@ -4,79 +4,91 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${record} ? 'Edit Medical Record' : 'Add Medical Record'">Add Medical Record</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <th:block th:replace="~{fragments/navbar :: globalStyles}"></th:block>
+
 </head>
-<body class="bg-light">
+<body>
 
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<div class="container mt-4 mb-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0"><i class="bi bi-journal-plus"></i> <span th:text="${record} ? 'Edit Medical Record' : 'Add Medical Record'">Add Medical Record</span></h4>
+<div class="cms-main">
+    <div class="cms-topbar">
+        <div>
+            <div class="cms-topbar-title" th:text="${record} ? 'Edit Medical Record' : 'Add Medical Record'">Add Medical Record</div>
+            <div class="cms-topbar-sub">Fill in the medical record details below</div>
+        </div>
+    </div>
+
+    <div class="cms-content">
+        <div style="max-width:640px;">
+            <div class="cms-card">
+                <div class="cms-card-header">
+                    <svg viewBox="0 0 24 24" fill="var(--coral)" style="width:20px;height:20px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 9h-2v2H9v2h2v2h2v-2h2v-2h-2v-2zm3-10v5h5l-5-5z"/></svg>
+                    <h5 th:text="${record} ? 'Edit Record' : 'New Record'">New Record</h5>
                 </div>
-                <div class="card-body">
+                <div class="cms-card-body">
                     <form th:action="${record} ? @{/medical-records/{id}/update(id=${record.recordId})} : @{/medical-records/create}"
                           th:object="${recordRequest}" method="post">
 
-                        <div class="mb-3">
-                            <label class="form-label">Patient</label>
-                            <select class="form-select"
-                                    th:classappend="${#fields.hasErrors('patientId')} ? 'is-invalid' : ''"
-                                    th:field="*{patientId}">
-                                <option value="">Select Patient</option>
-                                <option th:each="p : ${patients}" th:value="${p.patientId}" th:text="${p.name} + ' (' + ${p.patientId} + ')'"></option>
-                            </select>
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('patientId')}" th:errors="*{patientId}"></div>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+                            <div>
+                                <label class="cms-form-label">Patient</label>
+                                <select class="cms-form-control"
+                                        th:classappend="${#fields.hasErrors('patientId')} ? 'is-invalid' : ''"
+                                        th:field="*{patientId}">
+                                    <option value="">Select Patient</option>
+                                    <option th:each="p : ${patients}" th:value="${p.patientId}" th:text="${p.name} + ' (' + ${p.patientId} + ')'"></option>
+                                </select>
+                                <div class="cms-invalid-feedback" th:if="${#fields.hasErrors('patientId')}" th:errors="*{patientId}"></div>
+                            </div>
+
+                            <div>
+                                <label class="cms-form-label">Doctor</label>
+                                <select class="cms-form-control"
+                                        th:classappend="${#fields.hasErrors('doctorId')} ? 'is-invalid' : ''"
+                                        th:field="*{doctorId}">
+                                    <option value="">Select Doctor</option>
+                                    <option th:each="d : ${doctors}" th:value="${d.doctorId}" th:text="${d.name} + ' - ' + ${d.specialization}"></option>
+                                </select>
+                                <div class="cms-invalid-feedback" th:if="${#fields.hasErrors('doctorId')}" th:errors="*{doctorId}"></div>
+                            </div>
+
+                            <div style="grid-column:1/-1;">
+                                <label class="cms-form-label">Diagnosis</label>
+                                <textarea class="cms-form-control" th:field="*{diagnosis}" rows="3" placeholder="Enter diagnosis details"
+                                          th:classappend="${#fields.hasErrors('diagnosis')} ? 'is-invalid' : ''"></textarea>
+                                <div class="cms-invalid-feedback" th:if="${#fields.hasErrors('diagnosis')}" th:errors="*{diagnosis}"></div>
+                            </div>
+
+                            <div style="grid-column:1/-1;">
+                                <label class="cms-form-label">Treatment</label>
+                                <textarea class="cms-form-control" th:field="*{treatment}" rows="3" placeholder="Enter treatment plan"
+                                          th:classappend="${#fields.hasErrors('treatment')} ? 'is-invalid' : ''"></textarea>
+                                <div class="cms-invalid-feedback" th:if="${#fields.hasErrors('treatment')}" th:errors="*{treatment}"></div>
+                            </div>
+
+                            <div style="grid-column:1/-1;">
+                                <label class="cms-form-label">Notes</label>
+                                <textarea class="cms-form-control" th:field="*{notes}" rows="3" placeholder="Additional notes (optional)"
+                                          th:classappend="${#fields.hasErrors('notes')} ? 'is-invalid' : ''"></textarea>
+                                <div class="cms-invalid-feedback" th:if="${#fields.hasErrors('notes')}" th:errors="*{notes}"></div>
+                            </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Doctor</label>
-                            <select class="form-select"
-                                    th:classappend="${#fields.hasErrors('doctorId')} ? 'is-invalid' : ''"
-                                    th:field="*{doctorId}">
-                                <option value="">Select Doctor</option>
-                                <option th:each="d : ${doctors}" th:value="${d.doctorId}" th:text="${d.name} + ' - ' + ${d.specialization}"></option>
-                            </select>
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('doctorId')}" th:errors="*{doctorId}"></div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Diagnosis</label>
-                            <textarea class="form-control" th:field="*{diagnosis}" rows="3"
-                                      th:classappend="${#fields.hasErrors('diagnosis')} ? 'is-invalid' : ''"></textarea>
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('diagnosis')}" th:errors="*{diagnosis}"></div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Treatment</label>
-                            <textarea class="form-control" th:field="*{treatment}" rows="3"
-                                      th:classappend="${#fields.hasErrors('treatment')} ? 'is-invalid' : ''"></textarea>
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('treatment')}" th:errors="*{treatment}"></div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Notes</label>
-                            <textarea class="form-control" th:field="*{notes}" rows="3"
-                                      th:classappend="${#fields.hasErrors('notes')} ? 'is-invalid' : ''"></textarea>
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('notes')}" th:errors="*{notes}"></div>
-                        </div>
-
-                        <div class="d-flex justify-content-between">
-                            <a th:href="@{/medical-records}" class="btn btn-secondary"><i class="bi bi-x-lg"></i> Cancel</a>
-                            <button type="submit" class="btn btn-primary" th:text="${record} ? 'Update Record' : 'Add Record'">Add Record</button>
+                        <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);padding-top:16px;">
+                            <a th:href="@{/medical-records}" class="btn-cms btn-outline-cms">Cancel</a>
+                            <button type="submit" class="btn-cms btn-primary-cms"
+                                    th:text="${record} ? 'Update Record' : 'Add Record'">Add Record</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
 </div>
 
-<div th:replace="~{fragments/footer :: footer}"></div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

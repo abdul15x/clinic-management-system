@@ -4,92 +4,104 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${doctor} ? 'Edit Doctor' : 'Add Doctor'">Add Doctor</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <th:block th:replace="~{fragments/navbar :: globalStyles}"></th:block>
+
 </head>
-<body class="bg-light">
+<body>
 
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<div class="container mt-4 mb-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0"><i class="bi bi-person-badge"></i> <span th:text="${doctor} ? 'Edit Doctor' : 'Add New Doctor'">Add New Doctor</span></h4>
+<div class="cms-main">
+    <div class="cms-topbar">
+        <div>
+            <div class="cms-topbar-title" th:text="${doctor} ? 'Edit Doctor' : 'Add New Doctor'">Add New Doctor</div>
+            <div class="cms-topbar-sub">Fill in the doctor details below</div>
+        </div>
+    </div>
+
+    <div class="cms-content">
+        <div style="max-width:640px;">
+            <div class="cms-card">
+                <div class="cms-card-header">
+                    <svg viewBox="0 0 24 24" fill="var(--green)" style="width:20px;height:20px;"><path d="M12 12c2.7 0 8 1.34 8 4v2H4v-2c0-2.66 5.3-4 8-4zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm6 6.5v1h1.5v1H18v1h-1v-1h-1.5v-1H17v-1h1z"/></svg>
+                    <h5 th:text="${doctor} ? 'Edit Doctor' : 'New Doctor'">New Doctor</h5>
                 </div>
-                <div class="card-body">
+                <div class="cms-card-body">
                     <form th:action="${doctor} ? @{/doctors/{id}/update(id=${doctor.doctorId})} : @{/doctors/create}"
                           th:object="${doctorRequest}" method="post">
 
-                        <div class="mb-3">
-                            <label class="form-label">Full Name</label>
-                            <input type="text" class="form-control"
-                                   th:classappend="${#fields.hasErrors('name')} ? 'is-invalid' : ''"
-                                   th:field="*{name}">
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+                            <div style="grid-column:1/-1;">
+                                <label class="cms-form-label">Full Name</label>
+                                <input type="text" class="cms-form-control"
+                                       th:classappend="${#fields.hasErrors('name')} ? 'is-invalid' : ''"
+                                       th:field="*{name}" placeholder="Enter full name">
+                                <div class="cms-invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                            </div>
+
+                            <div>
+                                <label class="cms-form-label">Email</label>
+                                <input type="email" class="cms-form-control"
+                                       th:classappend="${#fields.hasErrors('email')} ? 'is-invalid' : ''"
+                                       th:field="*{email}" placeholder="email@example.com">
+                                <div class="cms-invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                            </div>
+
+                            <div>
+                                <label class="cms-form-label">Phone</label>
+                                <input type="text" class="cms-form-control"
+                                       th:classappend="${#fields.hasErrors('phone')} ? 'is-invalid' : ''"
+                                       th:field="*{phone}" placeholder="+92 300 0000000">
+                                <div class="cms-invalid-feedback" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
+                            </div>
+
+                            <div>
+                                <label class="cms-form-label">Specialization</label>
+                                <select class="cms-form-control"
+                                        th:classappend="${#fields.hasErrors('specialization')} ? 'is-invalid' : ''"
+                                        th:field="*{specialization}">
+                                    <option value="">Select Specialization</option>
+                                    <option th:each="spec : ${specializations}" th:value="${spec}" th:text="${spec}">CARDIOLOGY</option>
+                                </select>
+                                <div class="cms-invalid-feedback" th:if="${#fields.hasErrors('specialization')}" th:errors="*{specialization}"></div>
+                            </div>
+
+                            <div>
+                                <label class="cms-form-label">Experience (Years)</label>
+                                <input type="number" class="cms-form-control"
+                                       th:classappend="${#fields.hasErrors('experience')} ? 'is-invalid' : ''"
+                                       th:field="*{experience}" min="0" placeholder="e.g. 5">
+                                <div class="cms-invalid-feedback" th:if="${#fields.hasErrors('experience')}" th:errors="*{experience}"></div>
+                            </div>
+
+                            <div>
+                                <label class="cms-form-label">Qualification</label>
+                                <input type="text" class="cms-form-control"
+                                       th:classappend="${#fields.hasErrors('qualification')} ? 'is-invalid' : ''"
+                                       th:field="*{qualification}" placeholder="e.g. MBBS, FCPS">
+                                <div class="cms-invalid-feedback" th:if="${#fields.hasErrors('qualification')}" th:errors="*{qualification}"></div>
+                            </div>
+
+                            <div style="grid-column:1/-1;">
+                                <label class="cms-form-label">Availability</label>
+                                <input type="text" class="cms-form-control" th:field="*{availability}" placeholder="e.g., Mon-Fri 9AM-5PM">
+                            </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Email</label>
-                            <input type="email" class="form-control"
-                                   th:classappend="${#fields.hasErrors('email')} ? 'is-invalid' : ''"
-                                   th:field="*{email}">
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Phone</label>
-                            <input type="text" class="form-control"
-                                   th:classappend="${#fields.hasErrors('phone')} ? 'is-invalid' : ''"
-                                   th:field="*{phone}">
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Specialization</label>
-                            <select class="form-select"
-                                    th:classappend="${#fields.hasErrors('specialization')} ? 'is-invalid' : ''"
-                                    th:field="*{specialization}">
-                                <option value="">Select Specialization</option>
-                                <option th:each="spec : ${specializations}" th:value="${spec}" th:text="${spec}">CARDIOLOGY</option>
-                            </select>
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('specialization')}" th:errors="*{specialization}"></div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Qualification</label>
-                            <input type="text" class="form-control"
-                                   th:classappend="${#fields.hasErrors('qualification')} ? 'is-invalid' : ''"
-                                   th:field="*{qualification}">
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('qualification')}" th:errors="*{qualification}"></div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Experience (Years)</label>
-                            <input type="number" class="form-control"
-                                   th:classappend="${#fields.hasErrors('experience')} ? 'is-invalid' : ''"
-                                   th:field="*{experience}" min="0">
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('experience')}" th:errors="*{experience}"></div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Availability</label>
-                            <input type="text" class="form-control" th:field="*{availability}" placeholder="e.g., Mon-Fri 9AM-5PM">
-                        </div>
-
-                        <div class="d-flex justify-content-between">
-                            <a th:href="@{/doctors}" class="btn btn-secondary"><i class="bi bi-x-lg"></i> Cancel</a>
-                            <button type="submit" class="btn btn-primary" th:text="${doctor} ? 'Update Doctor' : 'Create Doctor'">Create Doctor</button>
+                        <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);padding-top:16px;">
+                            <a th:href="@{/doctors}" class="btn-cms btn-outline-cms">Cancel</a>
+                            <button type="submit" class="btn-cms btn-primary-cms"
+                                    th:text="${doctor} ? 'Update Doctor' : 'Create Doctor'">Create Doctor</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
 </div>
 
-<div th:replace="~{fragments/footer :: footer}"></div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

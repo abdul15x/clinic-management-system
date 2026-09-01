@@ -3,88 +3,383 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head></head>
 <body>
-<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" th:href="@{/}">
-            <i class="bi bi-hospital"></i> ClinicMS
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
 
-            <!-- LEFT SIDE: Only show module links when LOGGED IN -->
-            <ul class="navbar-nav me-auto" sec:authorize="isAuthenticated()">
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/dashboard}">
-                        <i class="bi bi-speedometer2"></i> Dashboard
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/patients}">
-                        <i class="bi bi-people"></i> Patients
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/doctors}">
-                        <i class="bi bi-person-badge"></i> Doctors
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/appointments}">
-                        <i class="bi bi-calendar-check"></i> Appointments
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/prescriptions}">
-                        <i class="bi bi-file-medical"></i> Prescriptions
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/medical-records}">
-                        <i class="bi bi-journal-medical"></i> Medical Records
-                    </a>
-                </li>
-            </ul>
+<!-- GLOBAL STYLES — included once via navbar fragment -->
+<style th:fragment="globalStyles">
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-            <!-- LEFT SIDE when NOT logged in: just Home or empty -->
-            <ul class="navbar-nav me-auto" sec:authorize="!isAuthenticated()">
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/}">
-                        <i class="bi bi-house"></i> Home
-                    </a>
-                </li>
-            </ul>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-            <!-- RIGHT SIDE: Auth links -->
-            <ul class="navbar-nav">
-                <li class="nav-item" sec:authorize="!isAuthenticated()">
-                    <a class="nav-link" th:href="@{/login}">
-                        <i class="bi bi-box-arrow-in-right"></i> Login
-                    </a>
-                </li>
-                <li class="nav-item" sec:authorize="!isAuthenticated()">
-                    <a class="nav-link" th:href="@{/register}">
-                        <i class="bi bi-person-plus"></i> Register
-                    </a>
-                </li>
-                <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
-                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                        <i class="bi bi-person-circle"></i>
-                        <span sec:authentication="name">User</span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li>
-                            <a class="dropdown-item" href="#" onclick="document.getElementById('logoutForm').submit();">
-                                <i class="bi bi-box-arrow-right"></i> Logout
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
+    :root {
+        --navy:        #0F2044;
+        --navy-dark:   #091630;
+        --navy-mid:    #1A3560;
+        --teal:        #10B8A6;
+        --teal-light:  #E0F7F5;
+        --coral:       #E8503A;
+        --amber:       #F59E0B;
+        --blue:        #3B82F6;
+        --green:       #22C55E;
+        --page-bg:     #F0F4FA;
+        --card-bg:     #FFFFFF;
+        --border:      #E2E8F0;
+        --text-primary:#0F172A;
+        --text-muted:  #64748B;
+        --text-light:  #94A3B8;
+        --sidebar-w:   240px;
+        --radius:      10px;
+        --shadow:      0 1px 4px rgba(15,32,68,.08), 0 4px 16px rgba(15,32,68,.06);
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background: var(--page-bg);
+        color: var(--text-primary);
+        min-height: 100vh;
+    }
+
+    /* ── SIDEBAR ── */
+    .cms-sidebar {
+        position: fixed; top: 0; left: 0;
+        width: var(--sidebar-w);
+        height: 100vh;
+        background: var(--navy);
+        display: flex; flex-direction: column;
+        z-index: 100;
+        overflow-y: auto;
+    }
+
+    .cms-brand {
+        padding: 22px 20px 18px;
+        border-bottom: 1px solid rgba(255,255,255,.08);
+        display: flex; align-items: center; gap: 10px;
+        text-decoration: none;
+    }
+    .cms-brand-icon {
+        width: 36px; height: 36px;
+        background: var(--teal);
+        border-radius: 8px;
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0;
+    }
+    .cms-brand-icon svg { width: 20px; height: 20px; fill: #fff; }
+    .cms-brand-name { color: #fff; font-size: 15px; font-weight: 700; letter-spacing: -.2px; }
+    .cms-brand-sub  { color: rgba(255,255,255,.45); font-size: 10px; font-weight: 400; letter-spacing: .3px; }
+
+    .cms-nav { padding: 12px 0; flex: 1; }
+    .cms-nav-section { padding: 16px 20px 6px; font-size: 10px; font-weight: 600; color: rgba(255,255,255,.3); letter-spacing: .8px; text-transform: uppercase; }
+
+    .cms-nav-link {
+        display: flex; align-items: center; gap: 10px;
+        padding: 9px 20px;
+        color: rgba(255,255,255,.65);
+        text-decoration: none;
+        font-size: 13.5px; font-weight: 500;
+        border-left: 3px solid transparent;
+        transition: color .15s, background .15s, border-color .15s;
+    }
+    .cms-nav-link:hover { color: #fff; background: rgba(255,255,255,.06); }
+    .cms-nav-link.active { color: #fff; background: rgba(16,184,166,.15); border-left-color: var(--teal); }
+    .cms-nav-link svg { width: 17px; height: 17px; opacity: .8; flex-shrink: 0; }
+    .cms-nav-link.active svg { opacity: 1; }
+
+    .cms-sidebar-footer {
+        padding: 14px 20px;
+        border-top: 1px solid rgba(255,255,255,.08);
+    }
+    .cms-user-pill {
+        display: flex; align-items: center; gap: 9px;
+        padding: 8px 10px;
+        border-radius: 8px;
+        background: rgba(255,255,255,.06);
+    }
+    .cms-user-avatar {
+        width: 30px; height: 30px;
+        background: var(--teal);
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 12px; font-weight: 700; color: #fff; flex-shrink: 0;
+    }
+    .cms-user-name { color: #fff; font-size: 12.5px; font-weight: 500; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cms-logout-btn {
+        background: none; border: none; cursor: pointer;
+        color: rgba(255,255,255,.4); padding: 4px;
+        display: flex; align-items: center;
+        transition: color .15s;
+        border-radius: 4px;
+    }
+    .cms-logout-btn:hover { color: var(--coral); background: rgba(232,80,58,.1); }
+    .cms-logout-btn svg { width: 15px; height: 15px; }
+
+    /* ── MAIN LAYOUT ── */
+    .cms-main {
+        margin-left: var(--sidebar-w);
+        min-height: 100vh;
+        display: flex; flex-direction: column;
+    }
+
+    .cms-topbar {
+        background: var(--card-bg);
+        border-bottom: 1px solid var(--border);
+        padding: 14px 28px;
+        display: flex; align-items: center; justify-content: space-between;
+        position: sticky; top: 0; z-index: 50;
+    }
+    .cms-topbar-title { font-size: 16px; font-weight: 600; color: var(--text-primary); }
+    .cms-topbar-sub   { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
+
+    .cms-content { padding: 28px; flex: 1; }
+
+    /* ── CARDS ── */
+    .cms-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+    }
+    .cms-card-header {
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--border);
+        display: flex; align-items: center; gap: 10px;
+    }
+    .cms-card-header h5 { font-size: 14px; font-weight: 600; margin: 0; }
+    .cms-card-body { padding: 20px; }
+
+    /* ── STAT CARDS ── */
+    .stat-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 20px;
+        border-left: 4px solid transparent;
+        transition: transform .18s, box-shadow .18s;
+    }
+    .stat-card:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(15,32,68,.12); }
+    .stat-card.teal   { border-left-color: var(--teal); }
+    .stat-card.blue   { border-left-color: var(--blue); }
+    .stat-card.green  { border-left-color: var(--green); }
+    .stat-card.amber  { border-left-color: var(--amber); }
+    .stat-card.coral  { border-left-color: var(--coral); }
+
+    .stat-icon {
+        width: 42px; height: 42px;
+        border-radius: 10px;
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0;
+    }
+    .stat-icon svg { width: 22px; height: 22px; }
+    .stat-icon.teal  { background: var(--teal-light);       color: var(--teal); }
+    .stat-icon.blue  { background: #EFF6FF; color: var(--blue);  }
+    .stat-icon.green { background: #F0FDF4; color: var(--green); }
+    .stat-icon.amber { background: #FFFBEB; color: var(--amber); }
+    .stat-icon.coral { background: #FEF2F0; color: var(--coral); }
+
+    .stat-value { font-size: 28px; font-weight: 700; color: var(--text-primary); line-height: 1; }
+    .stat-label { font-size: 11.5px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 4px; }
+    .stat-link  { font-size: 12px; color: var(--teal); text-decoration: none; font-weight: 500; }
+    .stat-link:hover { text-decoration: underline; }
+
+    /* ── TABLE ── */
+    .cms-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+    .cms-table thead th {
+        background: var(--page-bg);
+        color: var(--text-muted);
+        font-size: 11px; font-weight: 600; letter-spacing: .5px; text-transform: uppercase;
+        padding: 10px 16px; border-bottom: 1px solid var(--border); white-space: nowrap;
+    }
+    .cms-table tbody tr { border-bottom: 1px solid var(--border); transition: background .1s; }
+    .cms-table tbody tr:last-child { border-bottom: none; }
+    .cms-table tbody tr:hover { background: var(--page-bg); }
+    .cms-table tbody td { padding: 12px 16px; color: var(--text-primary); vertical-align: middle; }
+    .cms-table tbody td.muted { color: var(--text-muted); font-size: 12.5px; }
+
+    /* ── BUTTONS ── */
+    .btn-cms {
+        display: inline-flex; align-items: center; gap: 6px;
+        padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 500;
+        border: 1px solid transparent; cursor: pointer; text-decoration: none;
+        transition: background .15s, color .15s, transform .1s, box-shadow .15s;
+    }
+    .btn-cms:hover { transform: translateY(-1px); }
+    .btn-cms svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+    .btn-primary-cms   { background: var(--navy);  color: #fff; border-color: var(--navy); }
+    .btn-primary-cms:hover { background: var(--navy-mid); color: #fff; }
+    .btn-teal-cms      { background: var(--teal);  color: #fff; }
+    .btn-teal-cms:hover { background: #0da090; color: #fff; }
+    .btn-outline-cms   { background: #fff; color: var(--text-primary); border-color: var(--border); }
+    .btn-outline-cms:hover { background: var(--page-bg); color: var(--text-primary); }
+    .btn-danger-cms    { background: var(--coral); color: #fff; }
+    .btn-danger-cms:hover { background: #d4442f; color: #fff; }
+    .btn-warning-cms   { background: var(--amber); color: #fff; }
+    .btn-warning-cms:hover { background: #d97706; color: #fff; }
+
+    .btn-icon {
+        display: inline-flex; align-items: center; justify-content: center;
+        width: 30px; height: 30px; border-radius: 6px; border: 1px solid var(--border);
+        background: #fff; cursor: pointer; text-decoration: none;
+        transition: background .13s, color .13s;
+    }
+    .btn-icon svg { width: 13px; height: 13px; }
+    .btn-icon.view    { color: var(--blue);  } .btn-icon.view:hover    { background: #EFF6FF; border-color: var(--blue); }
+    .btn-icon.edit    { color: var(--amber); } .btn-icon.edit:hover    { background: #FFFBEB; border-color: var(--amber); }
+    .btn-icon.delete  { color: var(--coral); } .btn-icon.delete:hover  { background: #FEF2F0; border-color: var(--coral); }
+
+    /* ── BADGE ── */
+    .cms-badge { display: inline-block; padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 600; letter-spacing: .2px; }
+    .badge-green   { background: #DCFCE7; color: #166534; }
+    .badge-blue    { background: #DBEAFE; color: #1E40AF; }
+    .badge-amber   { background: #FEF3C7; color: #92400E; }
+    .badge-gray    { background: #F1F5F9; color: #475569; }
+    .badge-coral   { background: #FEE2E2; color: #991B1B; }
+
+    /* ── FORM ── */
+    .cms-form-label { font-size: 13px; font-weight: 500; color: var(--text-primary); margin-bottom: 6px; display: block; }
+    .cms-form-control {
+        width: 100%; padding: 9px 12px;
+        border: 1px solid var(--border); border-radius: 8px;
+        font-size: 13.5px; font-family: inherit; color: var(--text-primary);
+        background: #fff; transition: border-color .15s, box-shadow .15s;
+        outline: none;
+    }
+    .cms-form-control:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(16,184,166,.15); }
+    .cms-form-control.is-invalid { border-color: var(--coral); }
+    .cms-form-control.is-invalid:focus { box-shadow: 0 0 0 3px rgba(232,80,58,.15); }
+    .cms-invalid-feedback { color: var(--coral); font-size: 12px; margin-top: 4px; }
+
+    /* ── DETAIL CARD ── */
+    .detail-row { display: flex; gap: 6px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13.5px; }
+    .detail-row:last-child { border-bottom: none; }
+    .detail-label { color: var(--text-muted); font-weight: 500; min-width: 150px; flex-shrink: 0; }
+    .detail-value { color: var(--text-primary); }
+
+    .detail-block-label { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
+    .detail-block-value { background: var(--page-bg); border-radius: 8px; padding: 12px 16px; font-size: 13.5px; color: var(--text-primary); line-height: 1.6; }
+
+    /* ── QUICK ACTIONS ── */
+    .quick-action {
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        gap: 10px; padding: 20px; border-radius: var(--radius);
+        border: 1.5px dashed var(--border); background: #fff;
+        text-decoration: none; color: var(--text-primary);
+        transition: border-color .15s, background .15s, transform .15s;
+        text-align: center;
+    }
+    .quick-action:hover { border-color: var(--teal); background: var(--teal-light); color: var(--navy); transform: translateY(-2px); }
+    .quick-action svg { width: 26px; height: 26px; color: var(--teal); }
+    .quick-action-label { font-size: 13px; font-weight: 600; }
+
+    /* ── ALERT ── */
+    .cms-alert { padding: 12px 16px; border-radius: 8px; font-size: 13.5px; margin-bottom: 16px; display: flex; gap: 10px; align-items: flex-start; }
+    .cms-alert svg { width: 16px; height: 16px; flex-shrink: 0; margin-top: 1px; }
+    .cms-alert-danger  { background: #FEF2F0; color: #991B1B; border: 1px solid #FECACA; }
+    .cms-alert-success { background: #F0FDF4; color: #166534; border: 1px solid #BBF7D0; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+        .cms-sidebar { transform: translateX(-100%); }
+        .cms-main { margin-left: 0; }
+    }
+
+    /* ── LANDING PAGE ── */
+    .module-card {
+        background: var(--card-bg); border: 1px solid var(--border);
+        border-radius: var(--radius); box-shadow: var(--shadow);
+        padding: 28px 20px; text-align: center;
+        text-decoration: none; color: var(--text-primary);
+        display: block; transition: transform .18s, box-shadow .18s, border-color .18s;
+    }
+    .module-card:hover { transform: translateY(-3px); box-shadow: 0 6px 24px rgba(15,32,68,.13); border-color: var(--teal); color: var(--navy); }
+    .module-card-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+    .module-card-icon svg { width: 26px; height: 26px; }
+    .module-card-title { font-size: 14.5px; font-weight: 600; margin-bottom: 6px; }
+    .module-card-desc { font-size: 12.5px; color: var(--text-muted); line-height: 1.5; }
+</style>
+
+<!-- ══════════════════════════════════════════════
+     SIDEBAR NAV FRAGMENT
+══════════════════════════════════════════════ -->
+<nav th:fragment="navbar" class="cms-sidebar">
+    <!-- Brand -->
+    <a class="cms-brand" th:href="@{/}">
+        <div class="cms-brand-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2a5 5 0 0 1 5 5v1h2a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1h2V7a5 5 0 0 1 5-5zm1 9h-2v2H9v2h2v2h2v-2h2v-2h-2v-2zm-1-7a3 3 0 0 0-3 3v1h6V7a3 3 0 0 0-3-3z"/>
+            </svg>
         </div>
+        <div>
+            <div class="cms-brand-name">ClinicMS</div>
+            <div class="cms-brand-sub">Management System</div>
+        </div>
+    </a>
+
+    <!-- Nav items — only when authenticated -->
+    <div class="cms-nav" sec:authorize="isAuthenticated()">
+        <div class="cms-nav-section">Main</div>
+
+        <a class="cms-nav-link" th:href="@{/dashboard}">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h8v8H3V3zm0 10h8v8H3v-8zm10-10h8v8h-8V3zm0 10h8v8h-8v-8z"/></svg>
+            Dashboard
+        </a>
+        <a class="cms-nav-link" th:href="@{/patients}">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+            Patients
+        </a>
+        <a class="cms-nav-link" th:href="@{/doctors}">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 8 1.34 8 4v2H4v-2c0-2.66 5.3-4 8-4zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm6 6.5v1h1.5v1H18v1h-1v-1h-1.5v-1H17v-1h1z"/></svg>
+            Doctors
+        </a>
+        <a class="cms-nav-link" th:href="@{/appointments}">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
+            Appointments
+        </a>
+        <a class="cms-nav-link" th:href="@{/prescriptions}">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm-7 14l-4-4 1.41-1.41L12 14.17l6.59-6.59L20 9l-8 8z"/></svg>
+            Prescriptions
+        </a>
+        <a class="cms-nav-link" th:href="@{/medical-records}">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 9h-2v2H9v2h2v2h2v-2h2v-2h-2v-2zm3-10v5h5l-5-5z"/></svg>
+            Medical Records
+        </a>
+
+        <div class="cms-nav-section" sec:authorize="hasRole('ADMIN')" style="margin-top:8px;">Admin</div>
+        <a class="cms-nav-link" th:href="@{/register}" sec:authorize="hasRole('ADMIN')">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2zm-6 9a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+            Manage Users
+        </a>
     </div>
-    <form th:action="@{/logout}" method="post" id="logoutForm" class="d-none"></form>
+
+    <!-- Not-authenticated: just home -->
+    <div class="cms-nav" sec:authorize="!isAuthenticated()">
+        <a class="cms-nav-link" th:href="@{/}">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            Home
+        </a>
+        <a class="cms-nav-link" th:href="@{/login}">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11 7L9.6 8.4l2.6 2.6H2v2h10.2l-2.6 2.6L11 17l5-5-5-5zm9 12h-8v2h8a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-8v2h8v14z"/></svg>
+            Login
+        </a>
+        <a class="cms-nav-link" th:href="@{/register}">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V8H4v2H2v2h2v2h2v-2h2v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            Register
+        </a>
+    </div>
+
+    <!-- Footer: user info + logout -->
+    <div class="cms-sidebar-footer" sec:authorize="isAuthenticated()">
+        <div class="cms-user-pill">
+            <div class="cms-user-avatar">
+                <span sec:authentication="name" th:text="${#strings.substring(#authentication.name, 0, 1).toUpperCase()}">U</span>
+            </div>
+            <span class="cms-user-name" sec:authentication="name">User</span>
+            <button class="cms-logout-btn" title="Logout" onclick="document.getElementById('logoutForm').submit();">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5-5-5zM4 5h8V3H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8v-2H4V5z"/></svg>
+            </button>
+        </div>
+        <form th:action="@{/logout}" method="post" id="logoutForm" style="display:none;"></form>
+    </div>
 </nav>
+
 </body>
 </html>

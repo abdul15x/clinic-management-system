@@ -5,52 +5,94 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Appointment Details | Clinic Management System</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <th:block th:replace="~{fragments/navbar :: globalStyles}"></th:block>
+    <base target="_blank">
 </head>
-<body class="bg-light">
+<body>
 
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<div class="container mt-4 mb-5">
-    <h2><i class="bi bi-calendar-check"></i> Appointment Details</h2>
-    <div class="card shadow-sm mt-3">
-        <div class="card-body">
-            <h5 class="card-title" th:text="${appointment.appointmentId}"></h5>
-            <hr>
-            <div class="row">
-                <div class="col-md-6">
-                    <p class="card-text"><strong><i class="bi bi-person"></i> Patient:</strong> <span th:text="${appointment.patientName}"></span> (<span th:text="${appointment.patientId}"></span>)</p>
-                    <p class="card-text"><strong><i class="bi bi-person-badge"></i> Doctor:</strong> <span th:text="${appointment.doctorName}"></span> (<span th:text="${appointment.doctorId}"></span>)</p>
-                </div>
-                <div class="col-md-6">
-                    <p class="card-text"><strong><i class="bi bi-calendar"></i> Date:</strong> <span th:text="${appointment.appointmentDate}"></span></p>
-                    <p class="card-text"><strong><i class="bi bi-clock"></i> Time:</strong> <span th:text="${appointment.appointmentTime}"></span></p>
-                    <p class="card-text"><strong><i class="bi bi-flag"></i> Status:</strong>
-                        <span class="badge"
-                              th:classappend="${appointment.status.name() == 'SCHEDULED'} ? 'bg-warning' :
-                                              (${appointment.status.name() == 'COMPLETED'} ? 'bg-success' : 'bg-danger')"
-                              th:text="${appointment.status}"></span>
-                    </p>
-                </div>
-            </div>
-            <p class="card-text"><strong><i class="bi bi-sticky"></i> Notes:</strong> <span th:text="${appointment.notes}"></span></p>
-            <p class="card-text text-muted small"><strong><i class="bi bi-clock-history"></i> Created:</strong> <span th:text="${appointment.createdAt}"></span></p>
+<div class="cms-main">
+    <div class="cms-topbar">
+        <div>
+            <div class="cms-topbar-title">Appointment Details</div>
+            <div class="cms-topbar-sub" th:text="'ID: ' + ${appointment.appointmentId}">ID</div>
+        </div>
+        <div style="display:flex;gap:8px;">
+            <a th:href="@{/appointments/{id}/edit(id=${appointment.appointmentId})}" class="btn-cms btn-warning-cms" sec:authorize="hasAnyRole('ADMIN', 'RECEPTIONIST')">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm17.71-10.21a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                Edit
+            </a>
+            <a th:href="@{/appointments/{id}/delete(id=${appointment.appointmentId})}" class="btn-cms btn-danger-cms" sec:authorize="hasRole('ADMIN')"
+               onclick="return confirm('Are you sure?')">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                Delete
+            </a>
         </div>
     </div>
-    <div class="mt-3">
-        <a th:href="@{/appointments}" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Back</a>
-        <a th:href="@{/appointments/{id}/edit(id=${appointment.appointmentId})}" class="btn btn-warning" sec:authorize="hasAnyRole('ADMIN', 'RECEPTIONIST')">
-            <i class="bi bi-pencil"></i> Edit
-        </a>
-        <a th:href="@{/appointments/{id}/delete(id=${appointment.appointmentId})}" class="btn btn-danger" sec:authorize="hasRole('ADMIN')"
-           onclick="return confirm('Are you sure?')">
-            <i class="bi bi-trash"></i> Delete
-        </a>
+
+    <div class="cms-content">
+        <div style="max-width:720px;">
+            <div class="cms-card">
+                <div class="cms-card-header">
+                    <div style="width:40px;height:40px;background:var(--teal-light);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                        <svg viewBox="0 0 24 24" fill="var(--teal)" style="width:22px;height:22px;"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
+                    </div>
+                    <div>
+                        <h5 th:text="'Appointment #' + ${appointment.appointmentId}">Appointment</h5>
+                        <div style="font-size:12px;color:var(--text-muted);">
+                            <span th:text="${appointment.appointmentDate}"></span>
+                            <span th:if="${appointment.appointmentTime != null}" th:text="' at ' + ${appointment.appointmentTime}"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="cms-card-body">
+                    <div class="detail-row">
+                        <span class="detail-label">Patient</span>
+                        <span class="detail-value" th:text="${appointment.patientName} + ' (' + ${appointment.patientId} + ')'"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Doctor</span>
+                        <span class="detail-value" th:text="${appointment.doctorName} + ' (' + ${appointment.doctorId} + ')'"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Date</span>
+                        <span class="detail-value" th:text="${appointment.appointmentDate}"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Time</span>
+                        <span class="detail-value" th:text="${appointment.appointmentTime}"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Status</span>
+                        <span class="cms-badge"
+                              th:classappend="${appointment.status != null and appointment.status.name() == 'SCHEDULED'} ? 'badge-amber' :
+                                  (${appointment.status != null and appointment.status.name() == 'COMPLETED'} ? 'badge-green' : 'badge-coral')"
+                              th:text="${appointment.status}"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Notes</span>
+                        <span class="detail-value" th:text="${appointment.notes != null} ? ${appointment.notes} : '—'"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Created At</span>
+                        <span class="detail-value muted" th:text="${appointment.createdAt}"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top:16px;">
+                <a th:href="@{/appointments}" class="btn-cms btn-outline-cms">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+                    Back to Appointments
+                </a>
+            </div>
+        </div>
     </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
 </div>
 
-<div th:replace="~{fragments/footer :: footer}"></div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

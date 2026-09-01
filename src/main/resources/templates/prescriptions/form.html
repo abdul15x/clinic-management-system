@@ -4,99 +4,110 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${prescription} ? 'Edit Prescription' : 'Create Prescription'">Create Prescription</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <th:block th:replace="~{fragments/navbar :: globalStyles}"></th:block>
+
 </head>
-<body class="bg-light">
+<body>
 
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<div class="container mt-4 mb-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0"><i class="bi bi-file-earmark-medical"></i> <span th:text="${prescription} ? 'Edit Prescription' : 'Create Prescription'">Create Prescription</span></h4>
+<div class="cms-main">
+    <div class="cms-topbar">
+        <div>
+            <div class="cms-topbar-title" th:text="${prescription} ? 'Edit Prescription' : 'Create Prescription'">Create Prescription</div>
+            <div class="cms-topbar-sub">Fill in the prescription details below</div>
+        </div>
+    </div>
+
+    <div class="cms-content">
+        <div style="max-width:640px;">
+            <div class="cms-card">
+                <div class="cms-card-header">
+                    <svg viewBox="0 0 24 24" fill="var(--amber)" style="width:20px;height:20px;"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm-7 14l-4-4 1.41-1.41L12 14.17l6.59-6.59L20 9l-8 8z"/></svg>
+                    <h5 th:text="${prescription} ? 'Edit Prescription' : 'New Prescription'">New Prescription</h5>
                 </div>
-                <div class="card-body">
+                <div class="cms-card-body">
                     <form th:action="${prescription} ? @{/prescriptions/{id}/update(id=${prescription.prescriptionId})} : @{/prescriptions/create}"
                           th:object="${prescriptionRequest}" method="post">
 
-                        <div class="mb-3">
-                            <label class="form-label">Appointment</label>
-                            <select class="form-select"
-                                    th:classappend="${#fields.hasErrors('appointmentId')} ? 'is-invalid' : ''"
-                                    th:field="*{appointmentId}">
-                                <option value="">Select Appointment</option>
-                                <option th:each="a : ${appointments}" th:value="${a.appointmentId}" th:text="${a.appointmentId} + ' - ' + ${a.patientName} + ' with ' + ${a.doctorName}"></option>
-                            </select>
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('appointmentId')}" th:errors="*{appointmentId}"></div>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+                            <div>
+                                <label class="cms-form-label">Appointment</label>
+                                <select class="cms-form-control"
+                                        th:classappend="${#fields.hasErrors('appointmentId')} ? 'is-invalid' : ''"
+                                        th:field="*{appointmentId}">
+                                    <option value="">Select Appointment</option>
+                                    <option th:each="a : ${appointments}" th:value="${a.appointmentId}" th:text="${a.appointmentId} + ' - ' + ${a.patientName} + ' with ' + ${a.doctorName}"></option>
+                                </select>
+                                <div class="cms-invalid-feedback" th:if="${#fields.hasErrors('appointmentId')}" th:errors="*{appointmentId}"></div>
+                            </div>
+
+                            <div>
+                                <label class="cms-form-label">Patient</label>
+                                <select class="cms-form-control"
+                                        th:classappend="${#fields.hasErrors('patientId')} ? 'is-invalid' : ''"
+                                        th:field="*{patientId}">
+                                    <option value="">Select Patient</option>
+                                    <option th:each="p : ${patients}" th:value="${p.patientId}" th:text="${p.name} + ' (' + ${p.patientId} + ')'"></option>
+                                </select>
+                                <div class="cms-invalid-feedback" th:if="${#fields.hasErrors('patientId')}" th:errors="*{patientId}"></div>
+                            </div>
+
+                            <div>
+                                <label class="cms-form-label">Doctor</label>
+                                <select class="cms-form-control"
+                                        th:classappend="${#fields.hasErrors('doctorId')} ? 'is-invalid' : ''"
+                                        th:field="*{doctorId}">
+                                    <option value="">Select Doctor</option>
+                                    <option th:each="d : ${doctors}" th:value="${d.doctorId}" th:text="${d.name} + ' - ' + ${d.specialization}"></option>
+                                </select>
+                                <div class="cms-invalid-feedback" th:if="${#fields.hasErrors('doctorId')}" th:errors="*{doctorId}"></div>
+                            </div>
+
+                            <div>
+                                <label class="cms-form-label">Dosage</label>
+                                <input type="text" class="cms-form-control"
+                                       th:classappend="${#fields.hasErrors('dosage')} ? 'is-invalid' : ''"
+                                       th:field="*{dosage}" placeholder="e.g., 500mg twice daily">
+                                <div class="cms-invalid-feedback" th:if="${#fields.hasErrors('dosage')}" th:errors="*{dosage}"></div>
+                            </div>
+
+                            <div th:if="${prescription != null}" style="grid-column:1/-1;">
+                                <label class="cms-form-label">Status</label>
+                                <select class="cms-form-control" th:field="*{status}">
+                                    <option th:each="s : ${statuses}" th:value="${s}" th:text="${s}"></option>
+                                </select>
+                            </div>
+
+                            <div style="grid-column:1/-1;">
+                                <label class="cms-form-label">Medications</label>
+                                <textarea class="cms-form-control" th:field="*{medications}" rows="3" placeholder="e.g., Paracetamol, Amoxicillin"
+                                          th:classappend="${#fields.hasErrors('medications')} ? 'is-invalid' : ''"></textarea>
+                                <div class="cms-invalid-feedback" th:if="${#fields.hasErrors('medications')}" th:errors="*{medications}"></div>
+                            </div>
+
+                            <div style="grid-column:1/-1;">
+                                <label class="cms-form-label">Instructions</label>
+                                <textarea class="cms-form-control" th:field="*{instructions}" rows="3" placeholder="Enter instructions for the patient"
+                                          th:classappend="${#fields.hasErrors('instructions')} ? 'is-invalid' : ''"></textarea>
+                                <div class="cms-invalid-feedback" th:if="${#fields.hasErrors('instructions')}" th:errors="*{instructions}"></div>
+                            </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Patient</label>
-                            <select class="form-select"
-                                    th:classappend="${#fields.hasErrors('patientId')} ? 'is-invalid' : ''"
-                                    th:field="*{patientId}">
-                                <option value="">Select Patient</option>
-                                <option th:each="p : ${patients}" th:value="${p.patientId}" th:text="${p.name} + ' (' + ${p.patientId} + ')'"></option>
-                            </select>
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('patientId')}" th:errors="*{patientId}"></div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Doctor</label>
-                            <select class="form-select"
-                                    th:classappend="${#fields.hasErrors('doctorId')} ? 'is-invalid' : ''"
-                                    th:field="*{doctorId}">
-                                <option value="">Select Doctor</option>
-                                <option th:each="d : ${doctors}" th:value="${d.doctorId}" th:text="${d.name} + ' - ' + ${d.specialization}"></option>
-                            </select>
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('doctorId')}" th:errors="*{doctorId}"></div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Medications</label>
-                            <textarea class="form-control" th:field="*{medications}" rows="3"
-                                      th:classappend="${#fields.hasErrors('medications')} ? 'is-invalid' : ''"
-                                      placeholder="e.g., Paracetamol, Amoxicillin"></textarea>
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('medications')}" th:errors="*{medications}"></div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Dosage</label>
-                            <input type="text" class="form-control" th:field="*{dosage}"
-                                   th:classappend="${#fields.hasErrors('dosage')} ? 'is-invalid' : ''"
-                                   placeholder="e.g., 500mg twice daily">
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('dosage')}" th:errors="*{dosage}"></div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Instructions</label>
-                            <textarea class="form-control" th:field="*{instructions}" rows="3"
-                                      th:classappend="${#fields.hasErrors('instructions')} ? 'is-invalid' : ''"></textarea>
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('instructions')}" th:errors="*{instructions}"></div>
-                        </div>
-
-                        <div class="mb-3" th:if="${prescription != null}">
-                            <label class="form-label">Status</label>
-                            <select class="form-select" th:field="*{status}">
-                                <option th:each="s : ${statuses}" th:value="${s}" th:text="${s}"></option>
-                            </select>
-                        </div>
-
-                        <div class="d-flex justify-content-between">
-                            <a th:href="@{/prescriptions}" class="btn btn-secondary"><i class="bi bi-x-lg"></i> Cancel</a>
-                            <button type="submit" class="btn btn-primary" th:text="${prescription} ? 'Update Prescription' : 'Create Prescription'">Create Prescription</button>
+                        <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);padding-top:16px;">
+                            <a th:href="@{/prescriptions}" class="btn-cms btn-outline-cms">Cancel</a>
+                            <button type="submit" class="btn-cms btn-primary-cms"
+                                    th:text="${prescription} ? 'Update Prescription' : 'Create Prescription'">Create Prescription</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
 </div>
 
-<div th:replace="~{fragments/footer :: footer}"></div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

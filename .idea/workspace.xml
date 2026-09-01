@@ -5,9 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e30a66a7-e277-4e6c-87d4-1c9f48921df1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/fragments/footer.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/clinic/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/clinic/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/appointments/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/appointments/detail.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/appointments/form.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/appointments/form.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/appointments/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/appointments/list.html" afterDir="false" />
@@ -17,9 +17,7 @@
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/doctors/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/doctors/detail.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/doctors/form.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/doctors/form.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/doctors/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/doctors/list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/error/403.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/error/403.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/error/404.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/error/404.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/error/500.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/error/500.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/fragments/footer.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/fragments/footer.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/fragments/navbar.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/fragments/navbar.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/medical-records/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/medical-records/detail.html" afterDir="false" />
