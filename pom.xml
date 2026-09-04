@@ -19,7 +19,7 @@
     <description>Clinic Management System Backend</description>
 
     <properties>
-        <java.version>26</java.version>
+        <java.version>21</java.version>
         <lombok.version>1.18.46</lombok.version>
     </properties>
 
