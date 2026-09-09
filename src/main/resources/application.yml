@@ -2,9 +2,8 @@ spring:
   application:
     name: clinic-management-system
 
-  data:
-    mongodb:
-      uri: ${SPRING_DATA_MONGODB_URI}
+  mongodb:
+    uri: ${SPRING_DATA_MONGODB_URI}
 
   thymeleaf:
     cache: false
