@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prescription Details | Clinic Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <th:block th:replace="~{fragments/navbar :: globalStyles}"></th:block>
+
+</head>
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="cms-main">
+    <div class="cms-topbar">
+        <div>
+            <div class="cms-topbar-title">Prescription Details</div>
+            <div class="cms-topbar-sub" th:text="'ID: ' + ${prescription.prescriptionId}">ID</div>
+        </div>
+        <div style="display:flex;gap:8px;">
+            <a th:href="@{/prescriptions/{id}/edit(id=${prescription.prescriptionId})}" class="btn-cms btn-warning-cms" sec:authorize="hasAnyRole('ADMIN', 'DOCTOR')">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm17.71-10.21a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                Edit
+            </a>
+            <a th:href="@{/prescriptions/{id}/delete(id=${prescription.prescriptionId})}" class="btn-cms btn-danger-cms" sec:authorize="hasRole('ADMIN')"
+               onclick="return confirm('Are you sure?')">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                Delete
+            </a>
+        </div>
+    </div>
+
+    <div class="cms-content">
+        <div style="max-width:720px;">
+            <div class="cms-card">
+                <div class="cms-card-header">
+                    <div style="width:40px;height:40px;background:var(--amber);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                        <svg viewBox="0 0 24 24" fill="#fff" style="width:22px;height:22px;"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm-7 14l-4-4 1.41-1.41L12 14.17l6.59-6.59L20 9l-8 8z"/></svg>
+                    </div>
+                    <div>
+                        <h5 th:text="'Prescription #' + ${prescription.prescriptionId}">Prescription</h5>
+                        <div style="font-size:12px;color:var(--text-muted);" th:text="${prescription.createdAt}"></div>
+                    </div>
+                </div>
+                <div class="cms-card-body">
+                    <div class="detail-row">
+                        <span class="detail-label">Appointment</span>
+                        <span class="detail-value" th:text="${prescription.appointmentId}"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Patient</span>
+                        <span class="detail-value" th:text="${prescription.patientName} + ' (' + ${prescription.patientId} + ')'"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Doctor</span>
+                        <span class="detail-value" th:text="${prescription.doctorName} + ' (' + ${prescription.doctorId} + ')'"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Status</span>
+                        <span class="cms-badge"
+                              th:classappend="${prescription.status.name() == 'ACTIVE'} ? 'badge-green' :
+                                  (${prescription.status.name() == 'COMPLETED'} ? 'badge-blue' : 'badge-gray')"
+                              th:text="${prescription.status}"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Medications</span>
+                        <span class="detail-value" th:text="${prescription.medications}"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Dosage</span>
+                        <span class="detail-value" th:text="${prescription.dosage}"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Instructions</span>
+                        <span class="detail-value" th:text="${prescription.instructions} ?: '—'"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Created At</span>
+                        <span class="detail-value muted" th:text="${prescription.createdAt}"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top:16px;">
+                <a th:href="@{/prescriptions}" class="btn-cms btn-outline-cms">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+                    Back to Prescriptions
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</div>
+
+</body>
+</html>

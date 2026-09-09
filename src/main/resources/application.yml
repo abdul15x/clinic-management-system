@@ -1,9 +1,11 @@
 spring:
   application:
     name: clinic-management-system
+
   data:
     mongodb:
-      uri: ${SPRING_DATA_MONGODB_URI:mongodb://localhost:27017/clinic_db}
+      uri: ${SPRING_DATA_MONGODB_URI}
+
   thymeleaf:
     cache: false
     mode: HTML
@@ -12,17 +14,19 @@ spring:
     suffix: .html
 
 server:
-  port: 8080
-  server:
-    error:
-      whitelabel:
-        enabled: false
-      path: /error
-      spring doc:
-        api-docs:
-          path: /api-docs
-        swagger-ui:
-          path: /swagger-ui.html
-          operationsSorter: method
-          tagsSorter: alpha
-          tryItOutEnabled: true
+  port: ${PORT:8080}
+
+  error:
+    whitelabel:
+      enabled: false
+    path: /error
+
+springdoc:
+  api-docs:
+    path: /api-docs
+
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+    tagsSorter: alpha
+    tryItOutEnabled: true

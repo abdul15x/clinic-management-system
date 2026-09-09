@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prescriptions | Clinic Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <th:block th:replace="~{fragments/navbar :: globalStyles}"></th:block>
+
+</head>
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="cms-main">
+    <div class="cms-topbar">
+        <div>
+            <div class="cms-topbar-title">Prescriptions</div>
+            <div class="cms-topbar-sub">All patient prescriptions</div>
+        </div>
+        <a th:href="@{/prescriptions/new}" class="btn-cms btn-teal-cms" sec:authorize="hasAnyRole('ADMIN', 'DOCTOR')">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+            Create Prescription
+        </a>
+    </div>
+
+    <div class="cms-content">
+        <div class="cms-card">
+            <div style="overflow-x:auto;">
+                <table class="cms-table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Patient</th>
+                        <th>Doctor</th>
+                        <th>Medications</th>
+                        <th>Dosage</th>
+                        <th>Status</th>
+                        <th style="text-align:right;">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="p : ${prescriptions}">
+                        <td class="muted" th:text="${p.prescriptionId}"></td>
+                        <td style="font-weight:500;" th:text="${p.patientName}"></td>
+                        <td class="muted" th:text="${p.doctorName}"></td>
+                        <td class="muted" th:text="${#strings.abbreviate(p.medications, 30)}"></td>
+                        <td class="muted" th:text="${#strings.abbreviate(p.dosage, 20)}"></td>
+                        <td>
+                <span class="cms-badge"
+                      th:classappend="${p.status.name() == 'ACTIVE'} ? 'badge-green' :
+                                      (${p.status.name() == 'COMPLETED'} ? 'badge-blue' : 'badge-gray')"
+                      th:text="${p.status}"></span>
+                        </td>
+                        <td style="text-align:right;">
+                            <div style="display:inline-flex;gap:6px;">
+                                <a th:href="@{/prescriptions/{id}(id=${p.prescriptionId})}" class="btn-icon view" title="View">
+                                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg>
+                                </a>
+                                <a th:href="@{/prescriptions/{id}/edit(id=${p.prescriptionId})}" class="btn-icon edit" title="Edit" sec:authorize="hasAnyRole('ADMIN', 'DOCTOR')">
+                                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm17.71-10.21a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                                </a>
+                                <a th:href="@{/prescriptions/{id}/delete(id=${p.prescriptionId})}" class="btn-icon delete" title="Delete" sec:authorize="hasRole('ADMIN')"
+                                   onclick="return confirm('Are you sure?')">
+                                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div style="margin-top:16px;">
+            <a th:href="@{/}" class="btn-cms btn-outline-cms">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+                Back to Home
+            </a>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</div>
+
+</body>
+</html>
